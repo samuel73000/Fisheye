@@ -32,8 +32,7 @@ async function displayData(photographers, media) {
   // Sélectionne l'élément du DOM où afficher les données du photographe
   const headerMain = document.querySelector(".photograph-header");
   // Boucle à travers les photographes
-  console.log(media[29].photographerId);
-  console.log(photographerId);
+  
   photographers.forEach((photographers) => {
     // Vérifie si l'ID du photographe correspond à l'ID spécifié dans le lien
     if (photographers.id === parseInt(photographerId)) {
@@ -46,31 +45,53 @@ async function displayData(photographers, media) {
       pForTagLine.classList.add("photographer_page_tagline");
       const h2ForName = document.createElement("h2");
       h2ForName.classList.add("photographer_page_Name");
-      const img = document.createElement("img");
-      img.classList.add("photographer_page_PP");
+      const imgPP = document.createElement("img");
+      imgPP.classList.add("photographer_page_PP");
 
       // Remplit les éléments avec les données du photographe
       pForCityCountry.textContent = `${photographers.city}, ${photographers.country}`;
       pForTagLine.textContent = `${photographers.tagline}`;
       h2ForName.textContent = photographers.name;
-      img.setAttribute("src", picture); // Attribution de la source de l'image
-      img.setAttribute("alt", `photo de ${photographers.name}`); // Attribution du alt de l'image
-      img.setAttribute("aria-label", `${photographers.name}'s portrait`); // Utilisation de aria-label pour décrire l'image
+      imgPP.setAttribute("src", picture); // Attribution de la source de l'image
+      imgPP.setAttribute("alt", `photo de ${photographers.name}`); // Attribution du alt de l'image
+      imgPP.setAttribute("aria-label", `${photographers.name}'s portrait`); // Utilisation de aria-label pour décrire l'image
 
       // Insère les éléments dans le DOM
       headerMain.insertBefore(divForName, headerMain.firstChild);
-      headerMain.appendChild(img);
+      headerMain.appendChild(imgPP);
       divForName.appendChild(h2ForName);
       divForName.appendChild(pForCityCountry);
       divForName.appendChild(pForTagLine);
     }
   });
-  media.forEach((media) => {
+media.forEach((media) => {
     if (media.photographerId === parseInt(photographerId)) {
-      console.log(media);
-      
+        console.log(media);
+        const sectionPhoto = document.getElementById("photo");
+        
+        // Vérifie s'il y a une image
+        if (media.image) {
+            const imgPhoto = document.createElement("img");
+            imgPhoto.setAttribute("src", `../../assets/photographers/photo/${media.image}`);
+            imgPhoto.classList.add("photographer_page_photo");
+            sectionPhoto.appendChild(imgPhoto);
+        }
+        
+        // Vérifie s'il y a une vidéo
+        if (media.video) {
+            const video = document.createElement("video");
+            video.setAttribute("src", `../../assets/photographers/photo/${media.video}`);
+            video.setAttribute("controls", "controls"); // Ajoute des contrôles de lecture à la vidéo
+            video.classList.add("photographer_page_video");
+            sectionPhoto.appendChild(video);
+        }
     }
-  });
+});
+
+
+
+
+
 }
 // Fonction d'initialisation de l'application
 async function init() {
