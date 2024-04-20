@@ -4,7 +4,8 @@ function photographerTemplate(data) {
     const { name, portrait } = data;
   
     // Chemin de l'image du photographe
-    const picture = `assets/photographers/${portrait}`;
+    const picture = `../../assets/photographers/PhotographersIDPhotos/${data.portrait}`;
+    
   
     // Fonction pour générer le DOM de la carte utilisateur
     function getUserCardDOM() {

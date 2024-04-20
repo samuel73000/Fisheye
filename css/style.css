@@ -51,6 +51,8 @@ a{
 .photographer_section article img {
   height: 200px;
   width: 200px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 
 .photographer_home_country {
