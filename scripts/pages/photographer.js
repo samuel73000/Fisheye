@@ -32,7 +32,7 @@ async function displayData(photographers, media) {
   // Sélectionne l'élément du DOM où afficher les données du photographe
   const headerMain = document.querySelector(".photograph-header");
   // Boucle à travers les photographes
-  
+
   photographers.forEach((photographers) => {
     // Vérifie si l'ID du photographe correspond à l'ID spécifié dans le lien
     if (photographers.id === parseInt(photographerId)) {
@@ -64,34 +64,67 @@ async function displayData(photographers, media) {
       divForName.appendChild(pForTagLine);
     }
   });
-media.forEach((media) => {
+  media.forEach((media) => {
     if (media.photographerId === parseInt(photographerId)) {
-        console.log(media);
-        const sectionPhoto = document.getElementById("photo");
-        
-        // Vérifie s'il y a une image
-        if (media.image) {
-            const imgPhoto = document.createElement("img");
-            imgPhoto.setAttribute("src", `../../assets/photographers/photo/${media.image}`);
-            imgPhoto.classList.add("photographer_page_photo");
-            sectionPhoto.appendChild(imgPhoto);
-        }
-        
-        // Vérifie s'il y a une vidéo
-        if (media.video) {
-            const video = document.createElement("video");
-            video.setAttribute("src", `../../assets/photographers/photo/${media.video}`);
-            video.setAttribute("controls", "controls"); // Ajoute des contrôles de lecture à la vidéo
-            video.classList.add("photographer_page_video");
-            sectionPhoto.appendChild(video);
-        }
+      console.log(media);
+      const sectionPhoto = document.getElementById("photo");
+
+      // Vérifie s'il y a une image
+      if (media.image) {
+        const divimage = document.createElement("div");
+        const imgPhoto = document.createElement("img");
+        const imgTitle = document.createElement("h3");
+        const likeimg = document.createElement("p");
+        const coeur = document.createElement("i");
+        imgPhoto.setAttribute(
+          "src",
+          `../../assets/photographers/photo/${media.image}`
+        );
+        imgPhoto.setAttribute("alt", `photo de ${media.title}`); // Attribution du alt de l'image
+        imgPhoto.setAttribute("aria-label", `${media.title}'s portrait`); // Utilisation de aria-label pour décrire l'image
+        imgTitle.textContent = media.title;
+        likeimg.textContent = media.likes;
+        coeur.classList.add("fa-solid", "fa-heart", "coeur");
+        divimage.classList.add("container-image");
+        imgPhoto.classList.add("photographer_page_photo");
+        imgTitle.classList.add("title-img");
+        likeimg.classList.add("likes");
+        divimage.appendChild(imgPhoto);
+        sectionPhoto.appendChild(divimage);
+        divimage.appendChild(imgTitle);
+        divimage.appendChild(likeimg);
+        divimage.appendChild(coeur);
+      }
+
+      // Vérifie s'il y a une vidéo
+      if (media.video) {
+        const divvideo = document.createElement("div");
+        const video = document.createElement("video");
+        const videoTitle = document.createElement("h3");
+        const likeimg = document.createElement("p");
+        const coeur = document.createElement("i");
+        video.setAttribute(
+          "src",
+          `../../assets/photographers/photo/${media.video}`
+        );
+        video.setAttribute("controls", "controls"); // Ajoute des contrôles de lecture à la vidéo
+        video.setAttribute("alt", `photo de ${media.title}`); // Attribution du alt de l'image
+        video.setAttribute("aria-label", `${media.title}'s portrait`); // Utilisation de aria-label pour décrire l'image
+        likeimg.textContent = media.likes;
+        videoTitle.textContent = media.title;
+        videoTitle.classList.add("title-img");
+        divvideo.classList.add("container-video");
+        video.classList.add("photographer_page_video");
+        likeimg.classList.add("likes");
+        coeur.classList.add("fa-solid", "fa-heart", "coeur");
+        divvideo.appendChild(video);
+        sectionPhoto.appendChild(divvideo);
+        divvideo.appendChild(videoTitle);
+        divvideo.appendChild(likeimg);
+        divvideo.appendChild(coeur);
+      }
     }
-});
-
-
-
-
-
+  });
 }
 // Fonction d'initialisation de l'application
 async function init() {

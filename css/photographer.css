@@ -103,6 +103,7 @@ form input {
   align-items: center;
   margin-top: 20px;
   margin-left: 97px;
+  width: 50%;
 }
 .label-trier {
   font-weight: 700;
@@ -124,11 +125,44 @@ form input {
    gap: 95px;
    justify-content: center;
 }
+.container-image{
+  position: relative;
+  height: 390px; 
+  width: calc(27.33% - 20px);
+}
+.container-video{
+  position: relative;
+  height: 390px; 
+  width: calc(27.33% - 20px);
+}
 .photographer_page_photo{
     height: 351px; 
-    width: calc(27.33% - 20px);
+    width: 100%;
 }
 .photographer_page_video{
     height: 351px; 
-    width: calc(27.33% - 20px);
+    width: 100%;
+}
+.title-img{
+  font-size: 24px;
+  color:#901C1C;
+  font-weight: 400;
+  width: 70%;
+}
+.likes{
+position: absolute;
+color:#901C1C;
+font-size: 24px;
+font-weight: 500;
+right: 25px;
+top: 90%;
+
+}
+.coeur{
+  position: absolute;
+  font-size: 21px;
+  color:#901C1C;
+  right: 0;
+  top: 97.5%;
+
 }
