@@ -2,21 +2,29 @@
 <html>
   <head>
     <link href="css/style.css" rel="stylesheet" type="text/css" />
-    <meta charset="utf-8">
-    <link rel="icon" type="image/png" href="assets/favicon.png">
-    <link href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap" rel="stylesheet">
-    <title>Fisheye - photographe </title>
-    <script src="https://kit.fontawesome.com/0e02459f90.js" crossorigin="anonymous"></script>
+    <meta charset="utf-8" />
+    <link rel="icon" type="image/png" href="assets/favicon.png" />
+    <link
+      href="https://fonts.googleapis.com/css?family=DM+Sans&display=swap"
+      rel="stylesheet"
+    />
+    <title>Fisheye - photographe</title>
+    <script
+      src="https://kit.fontawesome.com/0e02459f90.js"
+      crossorigin="anonymous"
+    ></script>
   </head>
   <body>
     <header>
       <a href="./index.html">
-      <img src="assets/images/logo.png" class="logo" />
-    </a>
+        <img src="assets/images/logo.png" class="logo" />
+      </a>
     </header>
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal()">Contactez-moi</button>
+        <button class="contact_button" onclick="displayModal()">
+          Contactez-moi
+        </button>
       </div>
       <form class="container-trier">
         <label for="options" class="label-trier">Trier par :</label>
@@ -26,26 +34,43 @@
           <option value="option3">Titre</option>
         </select>
       </form>
-      <section id="photo">
-
-      </section>
-
+      <section id="photo"></section>
     </main>
     <div id="contact_modal">
-			<div class="modal">
-				<header>
+      <div class="modal">
+        <header>
           <h2>Contactez-moi</h2>
           <img src="assets/icons/close.svg" onclick="closeModal()" />
         </header>
-				<form>
-					<div>
-						<label>Prénom</label>
-						<input />
-					</div>
-          <button class="contact_button">Envoyer</button>
-				</form>
-			</div>
-		</div>
+        <form>
+          <div>
+            <label for="Prenom">Prénom</label>
+            <input
+              id="Prenom"
+              type="text"
+              required
+              minlength="2"
+              pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'\-]+$"
+            />
+            <label for="Nom">Nom</label>
+            <input
+              id="Nom"
+              type="text"
+              required
+              minlength="2"
+              pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'\-]+$"
+            />
+            <label for="Email">Email</label>
+            <input id="Email" type="email" required />
+            <label for="Message">Votre message</label>
+            <input id="Message" type="text" required minlength="15" />
+          </div>
+          <button class="contact_button" type="button" id="submit">
+            Envoyer
+          </button>
+        </form>
+      </div>
+    </div>
     <script src="/scripts/pages/photographer.js"></script>
     <script src="/scripts/utils/contactForm.js"></script>
   </body>

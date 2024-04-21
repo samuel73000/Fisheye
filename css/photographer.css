@@ -45,6 +45,7 @@
 }
 
 .modal {
+  position: fixed;
   border-radius: 5px;
   background-color: #db8876;
   width: 50%;
@@ -54,6 +55,8 @@
   justify-content: space-between;
   padding: 35px;
   margin: auto;
+  top: 100px;
+  left: 25%;
 }
 
 .modal header {
@@ -96,6 +99,12 @@ form input {
   height: 68px;
   border: none;
   border-radius: 5px;
+}
+#Message {
+  height: 170px;
+}
+.error-input{
+  border: 3px solid red;
 }
 .container-trier {
   display: flex;
