@@ -90,7 +90,7 @@ async function displayData(photographers, media) {
         likeCount.textContent = mediaItem.likes;
         heartIcon.classList.add("fa-solid", "fa-heart", "coeur");
         divImage.classList.add("container-image-video");
-        imgPhoto.classList.add("photographer_page_photo");
+        imgPhoto.classList.add("photographer_page_photo_video");
         imgTitle.classList.add("title-img");
         likeCount.classList.add("likes");
 
@@ -121,7 +121,7 @@ async function displayData(photographers, media) {
         videoTitle.textContent = mediaItem.title;
         videoTitle.classList.add("title-img");
         divVideo.classList.add("container-image-video");
-        video.classList.add("photographer_page_video");
+        video.classList.add("photographer_page_photo_video");
         likeCount.classList.add("likes");
         heartIcon.classList.add("fa-solid", "fa-heart", "coeur");
 
@@ -140,19 +140,44 @@ async function LightBox() {
   const videoImageContainer = document.querySelectorAll(
     ".container-image-video"
   );
-  const videoImage = document.querySelectorAll(
-    ".photographer_page_video, .photographer_page_photo"
-  );
+  const Close = document.createElement("i");
+  Close.classList.add("fa-solid", "fa-xmark", "crossClose");
+
+  const flecheGauche = document.createElement("i");
+  flecheGauche.classList.add("fa-solid" ,"fa-chevron-left" ,"flecheGauche")
+
+  const flecheDroite = document.createElement("i");
+  flecheDroite.classList.add("fa-solid" ,"fa-chevron-right" ,"flecheDroite")
+  
 
   videoImageContainer.forEach((container) => {
     container.addEventListener("click", () => {
-      videoImage.forEach((item) => {
-        item.classList.add("lightBox");
-      });
       container.classList.add("lightBox-container");
+      container.appendChild(Close);
+      container.appendChild(flecheGauche);
+      container.appendChild(flecheDroite);
     });
+    Close.addEventListener("click", (event) => {
+      event.stopPropagation();
+      container.classList.remove("lightBox-container");
+    });
+
+    flecheGauche.addEventListener("click",()=>{
+      
+    })
+
+    flecheDroite.addEventListener("click",()=>{
+
+    })
+
+
   });
 }
+
+
+
+
+
 
 // Fonction d'initialisation de l'application
 async function init() {

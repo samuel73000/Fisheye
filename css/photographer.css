@@ -135,23 +135,22 @@ form input {
     flex-wrap: wrap;
    gap: 95px;
    justify-content: center;
+   padding-bottom: 75px;
 }
 .container-image-video{
   position: relative;
   height: 390px; 
   width: calc(27.33% - 20px);
   z-index: 0;
+  cursor: grab;
+
 }
 
-
-.photographer_page_photo{
+.photographer_page_photo_video{
     height: 351px; 
     width: 100%;
 }
-.photographer_page_video{
-    height: 351px; 
-    width: 100%;
-}
+
 .title-img{
   font-size: 24px;
   color:#901C1C;
@@ -174,6 +173,10 @@ top: 90%;
   top: 97.5%;
 }
 
+
+
+
+/********************* code de lightbox  *****************************/
 .lightBox-container {
   position: fixed;
   top: 0%;
@@ -182,11 +185,52 @@ top: 90%;
   height: 100%;
   z-index: 1; 
   background-color: white;
+  cursor:auto;
 }
-.lightBox {
+
+.lightBox-container .photographer_page_photo_video {
   position: absolute;
   left: 15%;
   top: 5%;
   width: 70%; 
-  height: 90%; 
+  height: 88%;
+}
+.lightBox-container .coeur{
+  display: none;
+}
+.lightBox-container .likes{
+  display: none;
+}
+.lightBox-container .title-img{
+  position: absolute;
+  bottom: 0px;
+  left: 15%;
+}
+
+.lightBox-container .crossClose{
+  position: absolute;
+  color: #901C1C;
+  font-size: 50px;
+  right: 12.5%;
+  top: 5%;
+  cursor: grab;
+}
+
+
+
+.lightBox-container .flecheDroite{
+  font-size: 60px;
+  color: #901C1C;
+  position: absolute;
+  top: 47%;
+  right: 12%;
+  cursor: grab;
+}
+.lightBox-container .flecheGauche{
+  font-size: 60px;
+  color: #901C1C;
+  position: absolute;
+  top: 47%;
+  left: 12%;
+  cursor: grab;
 }
