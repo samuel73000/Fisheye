@@ -1,3 +1,4 @@
+
 // Définition d'une fonction asynchrone pour récupérer les données des photographes depuis un fichier JSON
 async function getPhotographers() {
   try {
@@ -136,48 +137,74 @@ async function displayData(photographers, media) {
   });
 }
 
+// Fonction asynchrone pour initialiser la Lightbox
 async function LightBox() {
-  const videoImageContainer = document.querySelectorAll(
-    ".container-image-video"
-  );
+  // Sélectionne tous les conteneurs d'images et vidéos
+  const videoImageContainers = document.querySelectorAll(".container-image-video");
+
+  // Crée les éléments DOM pour les boutons de fermeture et de navigation dans la Lightbox
   const Close = document.createElement("i");
   Close.classList.add("fa-solid", "fa-xmark", "crossClose");
-
   const flecheGauche = document.createElement("i");
-  flecheGauche.classList.add("fa-solid" ,"fa-chevron-left" ,"flecheGauche")
-
+  flecheGauche.classList.add("fa-solid", "fa-chevron-left", "flecheGauche");
   const flecheDroite = document.createElement("i");
-  flecheDroite.classList.add("fa-solid" ,"fa-chevron-right" ,"flecheDroite")
-  
+  flecheDroite.classList.add("fa-solid", "fa-chevron-right", "flecheDroite");
 
-  videoImageContainer.forEach((container) => {
+  // Convertit la NodeList en tableau pour pouvoir utiliser forEach
+  const containersArray = Array.from(videoImageContainers);
+
+  let currentIndex = 0; // Index de l'image ou de la vidéo actuellement affichée dans la Lightbox
+
+  // Fonction pour mettre en évidence l'élément actuellement affiché dans la Lightbox
+  function highlightCurrent() {
+    containersArray.forEach(container => {
+      container.classList.remove("lightBox-container");
+    });
+    containersArray[currentIndex].classList.add("lightBox-container");
+  }
+
+  // Écoute les événements de clic sur chaque conteneur d'image ou de vidéo
+  videoImageContainers.forEach((container, index) => {
     container.addEventListener("click", () => {
-      container.classList.add("lightBox-container");
+      currentIndex = index;
+      highlightCurrent();
+      // Ajoute les boutons de fermeture et de navigation à l'élément actuel
       container.appendChild(Close);
       container.appendChild(flecheGauche);
       container.appendChild(flecheDroite);
     });
-    Close.addEventListener("click", (event) => {
-      event.stopPropagation();
-      container.classList.remove("lightBox-container");
-    });
+  });
 
-    flecheGauche.addEventListener("click",()=>{
-      
-    })
+  // Gestionnaire de clic pour le bouton de fermeture
+  Close.addEventListener("click", (event) => {
+    event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
+    containersArray[currentIndex].classList.remove("lightBox-container"); // Cache la Lightbox
+  });
 
-    flecheDroite.addEventListener("click",()=>{
+  // Gestionnaire de clic pour le bouton de navigation vers la gauche
+  flecheGauche.addEventListener("click", (event) => {
+    event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+    // Décrémente l'index tout en assurant qu'il reste dans la plage valide
+    currentIndex = (currentIndex - 1 + containersArray.length) % containersArray.length;
+    highlightCurrent(); // Met en évidence l'élément actuellement affiché
+    // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+    containersArray[currentIndex].appendChild(Close);
+    containersArray[currentIndex].appendChild(flecheGauche);
+    containersArray[currentIndex].appendChild(flecheDroite);
+  });
 
-    })
-
-
+  // Gestionnaire de clic pour le bouton de navigation vers la droite
+  flecheDroite.addEventListener("click", (event) => {
+    event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+    // Incrémente l'index tout en assurant qu'il reste dans la plage valide
+    currentIndex = (currentIndex + 1) % containersArray.length;
+    highlightCurrent(); // Met en évidence l'élément actuellement affiché
+    // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+    containersArray[currentIndex].appendChild(Close);
+    containersArray[currentIndex].appendChild(flecheGauche);
+    containersArray[currentIndex].appendChild(flecheDroite);
   });
 }
-
-
-
-
-
 
 // Fonction d'initialisation de l'application
 async function init() {
@@ -186,6 +213,8 @@ async function init() {
 
   // Affiche les données du photographe dans le DOM
   displayData(photographers, media);
+
+  // Initialise la Lightbox pour les médias
   LightBox();
 }
 
