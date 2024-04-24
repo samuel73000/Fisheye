@@ -1,4 +1,3 @@
-
 // Définition d'une fonction asynchrone pour récupérer les données des photographes depuis un fichier JSON
 async function getPhotographers() {
   try {
@@ -140,7 +139,9 @@ async function displayData(photographers, media) {
 // Fonction asynchrone pour initialiser la Lightbox
 async function LightBox() {
   // Sélectionne tous les conteneurs d'images et vidéos
-  const videoImageContainers = document.querySelectorAll(".container-image-video");
+  const videoImageContainers = document.querySelectorAll(
+    ".container-image-video"
+  );
 
   // Crée les éléments DOM pour les boutons de fermeture et de navigation dans la Lightbox
   const Close = document.createElement("i");
@@ -157,7 +158,7 @@ async function LightBox() {
 
   // Fonction pour mettre en évidence l'élément actuellement affiché dans la Lightbox
   function highlightCurrent() {
-    containersArray.forEach(container => {
+    containersArray.forEach((container) => {
       container.classList.remove("lightBox-container");
     });
     containersArray[currentIndex].classList.add("lightBox-container");
@@ -185,7 +186,8 @@ async function LightBox() {
   flecheGauche.addEventListener("click", (event) => {
     event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
     // Décrémente l'index tout en assurant qu'il reste dans la plage valide
-    currentIndex = (currentIndex - 1 + containersArray.length) % containersArray.length;
+    currentIndex =
+      (currentIndex - 1 + containersArray.length) % containersArray.length;
     highlightCurrent(); // Met en évidence l'élément actuellement affiché
     // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
     containersArray[currentIndex].appendChild(Close);
@@ -206,6 +208,62 @@ async function LightBox() {
   });
 }
 
+
+// FUNCTION TRIER//////////////////////////
+async function trier() {
+  const containerTrierSelect = document.querySelectorAll(".container-trier .select-trier");
+  const containerTrierBorder = document.querySelectorAll(".container-trier .border");
+  const flecheTrier = document.querySelector(".fleche-trier");
+  const containerPhoto = document.querySelectorAll(".container-image-video");
+ 
+  
+
+  containerTrierSelect.forEach((element, index ) => {
+    element.addEventListener("click", () => {
+      // Réorganiser les éléments de sélection pour placer celui sur lequel on a cliqué en premier
+      const clickedText = element.textContent;
+      const firstText = containerTrierSelect[0].textContent;
+      containerTrierSelect[0].textContent = clickedText;
+      element.textContent = firstText;
+
+      // Maintenir la logique existante pour la gestion des classes CSS
+      if (containerTrierSelect[1].classList.contains("off-trier")) {
+        containerTrierSelect[1].classList.remove("off-trier");
+        containerTrierSelect[2].classList.remove("off-trier");
+        containerTrierBorder[0].classList.remove("off-trier");
+        containerTrierBorder[1].classList.remove("off-trier");
+        flecheTrier.classList.replace("fa-chevron-up", "fa-chevron-down");
+      } else {
+        containerTrierSelect[1].classList.add("off-trier");
+        containerTrierSelect[2].classList.add("off-trier");
+        containerTrierBorder[0].classList.add("off-trier");
+        containerTrierBorder[1].classList.add("off-trier");
+        flecheTrier.classList.replace("fa-chevron-down", "fa-chevron-up");
+      }
+
+      containerPhoto.forEach((containerPhoto) => {
+      
+        console.log(containerPhoto)
+         if (clickedText === "Popularité") {
+        
+
+
+        } else if (clickedText === "Date") {
+          // Logique de tri pour la date
+          // ...
+        } else if (clickedText === "Titre") {
+          // Logique de tri pour le titre
+          // ...
+        }
+      
+      })
+      
+    });
+  });
+}
+
+
+
 // Fonction d'initialisation de l'application
 async function init() {
   // Récupère les données des photographes
@@ -216,6 +274,7 @@ async function init() {
 
   // Initialise la Lightbox pour les médias
   LightBox();
+  trier();
 }
 
 // Appelle la fonction d'initialisation pour démarrer l'application
