@@ -150,12 +150,15 @@ form input {
   margin-left: 13px;
   width: 140px;
   border: #ffffff solid 1px;
-}
-
+} 
 .off-trier {
   display: none;
   visibility: hidden;
 }
+
+
+
+
 
 
 #photo {

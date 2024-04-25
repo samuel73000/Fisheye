@@ -208,59 +208,63 @@ async function LightBox() {
   });
 }
 
-
 // FUNCTION TRIER//////////////////////////
-async function trier() {
+
+
+async function trier(photographers, media) {
   const containerTrierSelect = document.querySelectorAll(".container-trier .select-trier");
   const containerTrierBorder = document.querySelectorAll(".container-trier .border");
   const flecheTrier = document.querySelector(".fleche-trier");
-  const containerPhoto = document.querySelectorAll(".container-image-video");
- 
-  
+  const urlParams = new URLSearchParams(window.location.search);
+  const photographerId = parseInt(urlParams.get("id")); // Récupérer l'ID du photographe depuis l'URL
 
-  containerTrierSelect.forEach((element, index ) => {
-    element.addEventListener("click", () => {
-      // Réorganiser les éléments de sélection pour placer celui sur lequel on a cliqué en premier
-      const clickedText = element.textContent;
-      const firstText = containerTrierSelect[0].textContent;
-      containerTrierSelect[0].textContent = clickedText;
-      element.textContent = firstText;
-
-      // Maintenir la logique existante pour la gestion des classes CSS
-      if (containerTrierSelect[1].classList.contains("off-trier")) {
-        containerTrierSelect[1].classList.remove("off-trier");
-        containerTrierSelect[2].classList.remove("off-trier");
-        containerTrierBorder[0].classList.remove("off-trier");
-        containerTrierBorder[1].classList.remove("off-trier");
-        flecheTrier.classList.replace("fa-chevron-up", "fa-chevron-down");
-      } else {
-        containerTrierSelect[1].classList.add("off-trier");
-        containerTrierSelect[2].classList.add("off-trier");
-        containerTrierBorder[0].classList.add("off-trier");
-        containerTrierBorder[1].classList.add("off-trier");
-        flecheTrier.classList.replace("fa-chevron-down", "fa-chevron-up");
+  // Fonction pour ouvrir/fermer les options de tri
+  containerTrierSelect[0].addEventListener("click", () => {
+    containerTrierSelect.forEach((element, index) => {
+      if (index !== 0) { // Évitez de modifier le premier élément
+        element.classList.toggle("off-trier");
       }
-
-      containerPhoto.forEach((containerPhoto) => {
-      
-        console.log(containerPhoto)
-         if (clickedText === "Popularité") {
-        
-
-
-        } else if (clickedText === "Date") {
-          // Logique de tri pour la date
-          // ...
-        } else if (clickedText === "Titre") {
-          // Logique de tri pour le titre
-          // ...
-        }
-      
-      })
-      
     });
+    containerTrierBorder.forEach((element, index) => {
+       // Évitez de modifier le premier élément
+        element.classList.toggle("off-trier");
+    });
+    flecheTrier.classList.toggle("fa-chevron-up");
+    flecheTrier.classList.toggle("fa-chevron-down");
   });
+
+  // Fonction de tri par popularité
+  function sortByPopularity() {
+    media
+      .filter((photo) => photo.photographerId === photographerId)
+      .sort((a, b) => b.likes - a.likes)
+      .forEach((photo) => console.log(photo.likes));
+  }
+
+  // Fonction de tri par date
+  function sortByDate() {
+    media
+      .filter((photo) => photo.photographerId === photographerId)
+      .sort((a, b) => new Date(b.date) - new Date(a.date))
+      .forEach((photo) => console.log(photo.date));
+  }
+
+  // Fonction de tri par titre
+  function sortByTitle() {
+    media
+      .filter((photo) => photo.photographerId === photographerId)
+      .sort((a, b) => a.title.localeCompare(b.title))
+      .forEach((photo) => console.log(photo.title));
+  }
+
+  // Associer les événements de clic aux éléments de tri
+  containerTrierSelect[0].addEventListener("click", () => sortByPopularity());
+  containerTrierSelect[1].addEventListener("click", () => sortByDate());
+  containerTrierSelect[2].addEventListener("click", () => sortByTitle());
 }
+
+
+
 
 
 
@@ -274,7 +278,7 @@ async function init() {
 
   // Initialise la Lightbox pour les médias
   LightBox();
-  trier();
+  trier(photographers, media);
 }
 
 // Appelle la fonction d'initialisation pour démarrer l'application
