@@ -133,6 +133,7 @@ form input {
   color: #ffffff;
   font-size: 18px;
   margin-top: 5px;
+  cursor: grab;
 }
 
 .select-trier {

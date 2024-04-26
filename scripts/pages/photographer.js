@@ -6,19 +6,19 @@ async function getPhotographers() {
 
     // Vérifie si la réponse est OK (statut 200)
     if (!response.ok) {
-      throw new Error("Erreur HTTP " + response.status);
+      throw new Error("Erreur HTTP " + response.status); // Si la réponse n'est pas OK, une erreur est levée
     }
 
     // Convertit la réponse en JSON et retourne un objet contenant les photographes et les médias
-    const data = await response.json();
+    const data = await response.json(); // Conversion de la réponse en format JSON
     return {
-      photographers: data.photographers, // Contient les données des photographes
-      media: data.media, // Contient les données des médias associés aux photographes
+      photographers: data.photographers, // Retourne les données des photographes
+      media: data.media, // Retourne les données des médias associés aux photographes
     };
   } catch (error) {
     // Attrape les erreurs et les affiche dans la console en cas de problème lors de la récupération des données
     console.error(
-      "Il y a eu un problème lors de la récupération du fichier JSON :",
+      "Il y a eu un problème lors de la récupération du fichier JSON :", // Affichage de l'erreur dans la console
       error
     );
   }
@@ -27,8 +27,8 @@ async function getPhotographers() {
 // Fonction asynchrone pour afficher les données d'un photographe dans le DOM
 async function displayData(photographers, media) {
   // Récupère l'ID du photographe depuis l'URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const photographerId = urlParams.get("id");
+  const urlParams = new URLSearchParams(window.location.search); // Obtient les paramètres de l'URL
+  const photographerId = urlParams.get("id"); // Récupère l'ID du photographe depuis les paramètres de l'URL
 
   // Sélectionne l'élément du DOM où afficher les données du photographe
   const headerMain = document.querySelector(".photograph-header");
@@ -36,8 +36,10 @@ async function displayData(photographers, media) {
   // Boucle à travers les photographes
   photographers.forEach((photographer) => {
     // Vérifie si l'ID du photographe correspond à l'ID spécifié dans le lien
-    if (photographer.id === parseInt(photographerId)) {
+    if (photographer.id === parseInt(photographerId)) { // Vérification de correspondance d'ID
       const picture = `../../assets/photographers/PhotographersIDPhotos/${photographer.portrait}`;
+      // Chemin vers l'image du photographe
+
       // Crée des éléments DOM pour afficher les données du photographe
       const divForName = document.createElement("div");
       const pForCityCountry = document.createElement("p");
@@ -50,9 +52,9 @@ async function displayData(photographers, media) {
       imgPP.classList.add("photographer_page_PP");
 
       // Remplit les éléments avec les données du photographe
-      pForCityCountry.textContent = `${photographer.city}, ${photographer.country}`;
-      pForTagLine.textContent = `${photographer.tagline}`;
-      h2ForName.textContent = photographer.name;
+      pForCityCountry.textContent = `${photographer.city}, ${photographer.country}`; // Ville et pays du photographe
+      pForTagLine.textContent = `${photographer.tagline}`; // Tagline du photographe
+      h2ForName.textContent = photographer.name; // Nom du photographe
       imgPP.setAttribute("src", picture); // Attribution de la source de l'image
       imgPP.setAttribute("alt", `photo de ${photographer.name}`); // Attribution du alt de l'image
       imgPP.setAttribute("aria-label", `${photographer.name}'s portrait`); // Utilisation de aria-label pour décrire l'image
@@ -69,11 +71,11 @@ async function displayData(photographers, media) {
   // Boucle à travers les médias
   media.forEach((mediaItem) => {
     // Vérifie si le média appartient au photographe spécifié
-    if (mediaItem.photographerId === parseInt(photographerId)) {
+    if (mediaItem.photographerId === parseInt(photographerId)) { // Vérification de correspondance d'ID
       const sectionPhoto = document.getElementById("photo");
 
       // Vérifie s'il s'agit d'une image
-      if (mediaItem.image) {
+      if (mediaItem.image) { // Si le média est une image
         const divImage = document.createElement("div");
         const imgPhoto = document.createElement("img");
         const imgTitle = document.createElement("h3");
@@ -83,16 +85,17 @@ async function displayData(photographers, media) {
         imgPhoto.setAttribute(
           "src",
           `../../assets/photographers/photo/${mediaItem.image}`
-        );
+        ); // Chemin vers l'image
         imgPhoto.setAttribute("alt", `photo de ${mediaItem.title}`); // Attribution du alt de l'image
         imgPhoto.setAttribute("aria-label", `${mediaItem.title}'s portrait`); // Utilisation de aria-label pour décrire l'image
-        imgTitle.textContent = mediaItem.title;
-        likeCount.textContent = mediaItem.likes;
-        heartIcon.classList.add("fa-solid", "fa-heart", "coeur");
-        divImage.classList.add("container-image-video");
-        imgPhoto.classList.add("photographer_page_photo_video");
-        imgTitle.classList.add("title-img");
-        likeCount.classList.add("likes");
+        imgTitle.textContent = mediaItem.title; // Titre de l'image
+        likeCount.textContent = mediaItem.likes; // Nombre de likes
+        divImage.setAttribute("data-photo-id", mediaItem.id); // Attribution de l'ID du média au conteneur
+        heartIcon.classList.add("fa-solid", "fa-heart", "coeur"); // Ajout des classes pour l'icône "cœur"
+        divImage.classList.add("container-image-video"); // Ajout de la classe pour le conteneur d'image
+        imgPhoto.classList.add("photographer_page_photo_video"); // Ajout de la classe pour l'image
+        imgTitle.classList.add("title-img"); // Ajout de la classe pour le titre de l'image
+        likeCount.classList.add("likes"); // Ajout de la classe pour le nombre de likes
 
         // Ajoute les éléments au DOM
         divImage.appendChild(imgPhoto);
@@ -103,7 +106,7 @@ async function displayData(photographers, media) {
       }
 
       // Vérifie s'il s'agit d'une vidéo
-      if (mediaItem.video) {
+      if (mediaItem.video) { // Si le média est une vidéo
         const divVideo = document.createElement("div");
         const video = document.createElement("video");
         const videoTitle = document.createElement("h3");
@@ -113,17 +116,18 @@ async function displayData(photographers, media) {
         video.setAttribute(
           "src",
           `../../assets/photographers/photo/${mediaItem.video}`
-        );
+        ); // Chemin vers la vidéo
         video.setAttribute("controls", "controls"); // Ajoute des contrôles de lecture à la vidéo
         video.setAttribute("alt", `photo de ${mediaItem.title}`); // Attribution du alt de l'image
         video.setAttribute("aria-label", `${mediaItem.title}'s portrait`); // Utilisation de aria-label pour décrire l'image
-        likeCount.textContent = mediaItem.likes;
-        videoTitle.textContent = mediaItem.title;
-        videoTitle.classList.add("title-img");
-        divVideo.classList.add("container-image-video");
-        video.classList.add("photographer_page_photo_video");
-        likeCount.classList.add("likes");
-        heartIcon.classList.add("fa-solid", "fa-heart", "coeur");
+        likeCount.textContent = mediaItem.likes; // Nombre de likes
+        videoTitle.textContent = mediaItem.title; // Titre de la vidéo
+        divVideo.setAttribute("data-photo-id", mediaItem.id); // Attribution de l'ID du média au conteneur
+        videoTitle.classList.add("title-img"); // Ajout de la classe pour le titre de la vidéo
+        divVideo.classList.add("container-image-video"); // Ajout de la classe pour le conteneur de vidéo
+        video.classList.add("photographer_page_photo_video"); // Ajout de la classe pour la vidéo
+        likeCount.classList.add("likes"); // Ajout de la classe pour le nombre de likes
+        heartIcon.classList.add("fa-solid", "fa-heart", "coeur"); // Ajout des classes pour l'icône "cœur"
 
         // Ajoute les éléments au DOM
         divVideo.appendChild(video);
@@ -208,65 +212,127 @@ async function LightBox() {
   });
 }
 
-// FUNCTION TRIER//////////////////////////
-
-
+// Fonction de tri pour les médias
 async function trier(photographers, media) {
-  const containerTrierSelect = document.querySelectorAll(".container-trier .select-trier");
-  const containerTrierBorder = document.querySelectorAll(".container-trier .border");
+  // Sélection des éléments pour le tri
+  const containerTrierSelect = document.querySelectorAll(
+    ".container-trier .select-trier"
+  );
+  const containerTrierBorder = document.querySelectorAll(
+    ".container-trier .border"
+  );
   const flecheTrier = document.querySelector(".fleche-trier");
   const urlParams = new URLSearchParams(window.location.search);
   const photographerId = parseInt(urlParams.get("id")); // Récupérer l'ID du photographe depuis l'URL
 
   // Fonction pour ouvrir/fermer les options de tri
-  containerTrierSelect[0].addEventListener("click", () => {
+  flecheTrier.addEventListener("click", () => {
     containerTrierSelect.forEach((element, index) => {
-      if (index !== 0) { // Évitez de modifier le premier élément
+      if (index !== 0) {
+        // Évitez de modifier le premier élément
         element.classList.toggle("off-trier");
       }
     });
     containerTrierBorder.forEach((element, index) => {
-       // Évitez de modifier le premier élément
-        element.classList.toggle("off-trier");
+      // Évitez de modifier le premier élément
+      element.classList.toggle("off-trier");
     });
     flecheTrier.classList.toggle("fa-chevron-up");
     flecheTrier.classList.toggle("fa-chevron-down");
   });
 
+  // Créer une map pour lier chaque photo à son conteneur DOM
+  const containersMap = new Map();
+
+  // Fonction pour réorganiser les éléments dans l'ordre souhaité
+  function reorganiserElements(nouveauxIndices) {
+    const sectionPhoto = document.getElementById("photo");
+    nouveauxIndices.forEach((nouvelIndex, oldIndex) => {
+      sectionPhoto.insertBefore(
+        sectionPhoto.children[oldIndex],
+        sectionPhoto.children[nouvelIndex]
+      );
+    });
+  }
+
   // Fonction de tri par popularité
   function sortByPopularity() {
-    media
-      .filter((photo) => photo.photographerId === photographerId)
-      .sort((a, b) => b.likes - a.likes)
-      .forEach((photo) => console.log(photo.likes));
+    const sectionPhoto = document.getElementById("photo");
+    const filteredMedia = media.filter(
+      (photo) => photo.photographerId === photographerId
+    );
+    const sortedMedia = filteredMedia.sort((a, b) => b.likes - a.likes);
+
+    // Supprimer tous les enfants de la sectionPhoto
+    sectionPhoto.innerHTML = ""; // Effacer le contenu de la section
+
+    // Ajouter les éléments triés dans le DOM dans le bon ordre
+    sortedMedia.forEach((photo) => {
+      const container = containersMap.get(photo);
+      if (container) {
+        // Vérifier si container existe
+        sectionPhoto.appendChild(container.cloneNode(true)); // Utiliser cloneNode pour ajouter une copie de l'élément conteneur
+      }
+    });
   }
 
   // Fonction de tri par date
   function sortByDate() {
-    media
-      .filter((photo) => photo.photographerId === photographerId)
-      .sort((a, b) => new Date(b.date) - new Date(a.date))
-      .forEach((photo) => console.log(photo.date));
+    const sectionPhoto = document.getElementById("photo");
+    const filteredMedia = media.filter(
+      (photo) => photo.photographerId === photographerId
+    );
+    const sortedMedia = filteredMedia.sort(
+      (a, b) => new Date(b.date) - new Date(a.date)
+    );
+
+    // Supprimer tous les enfants de la sectionPhoto
+    sectionPhoto.innerHTML = "";
+
+    // Ajouter les éléments triés dans le DOM dans le bon ordre
+    sortedMedia.forEach((photo) => {
+      const container = containersMap.get(photo);
+      if (container) {
+        sectionPhoto.appendChild(container.cloneNode(true));
+      }
+    });
   }
 
   // Fonction de tri par titre
   function sortByTitle() {
-    media
-      .filter((photo) => photo.photographerId === photographerId)
-      .sort((a, b) => a.title.localeCompare(b.title))
-      .forEach((photo) => console.log(photo.title));
+    const sectionPhoto = document.getElementById("photo");
+    const filteredMedia = media.filter(
+      (photo) => photo.photographerId === photographerId
+    );
+    const sortedMedia = filteredMedia.sort((a, b) =>
+      a.title.localeCompare(b.title)
+    );
+
+    // Supprimer tous les enfants de la sectionPhoto
+    sectionPhoto.innerHTML = "";
+
+    // Ajouter les éléments triés dans le DOM dans le bon ordre
+    sortedMedia.forEach((photo) => {
+      const container = containersMap.get(photo);
+      if (container) {
+        sectionPhoto.appendChild(container.cloneNode(true));
+      }
+    });
   }
 
   // Associer les événements de clic aux éléments de tri
-  containerTrierSelect[0].addEventListener("click", () => sortByPopularity());
-  containerTrierSelect[1].addEventListener("click", () => sortByDate());
-  containerTrierSelect[2].addEventListener("click", () => sortByTitle());
+  containerTrierSelect[0].addEventListener("click", sortByPopularity);
+  containerTrierSelect[1].addEventListener("click", sortByDate);
+  containerTrierSelect[2].addEventListener("click", sortByTitle);
+
+  // Boucle à travers les médias et associe chaque média à son conteneur DOM dans containersMap
+  media.forEach((mediaItem) => {
+    const container = document.querySelector(
+      `[data-photo-id="${mediaItem.id}"]`
+    );
+    containersMap.set(mediaItem, container);
+  });
 }
-
-
-
-
-
 
 // Fonction d'initialisation de l'application
 async function init() {
@@ -278,6 +344,8 @@ async function init() {
 
   // Initialise la Lightbox pour les médias
   LightBox();
+
+  // Initialise la fonction de tri pour les médias
   trier(photographers, media);
 }
 
