@@ -36,7 +36,8 @@ async function displayData(photographers, media) {
   // Boucle à travers les photographes
   photographers.forEach((photographer) => {
     // Vérifie si l'ID du photographe correspond à l'ID spécifié dans le lien
-    if (photographer.id === parseInt(photographerId)) { // Vérification de correspondance d'ID
+    if (photographer.id === parseInt(photographerId)) {
+      // Vérification de correspondance d'ID
       const picture = `../../assets/photographers/PhotographersIDPhotos/${photographer.portrait}`;
       // Chemin vers l'image du photographe
 
@@ -71,11 +72,13 @@ async function displayData(photographers, media) {
   // Boucle à travers les médias
   media.forEach((mediaItem) => {
     // Vérifie si le média appartient au photographe spécifié
-    if (mediaItem.photographerId === parseInt(photographerId)) { // Vérification de correspondance d'ID
+    if (mediaItem.photographerId === parseInt(photographerId)) {
+      // Vérification de correspondance d'ID
       const sectionPhoto = document.getElementById("photo");
 
       // Vérifie s'il s'agit d'une image
-      if (mediaItem.image) { // Si le média est une image
+      if (mediaItem.image) {
+        // Si le média est une image
         const divImage = document.createElement("div");
         const imgPhoto = document.createElement("img");
         const imgTitle = document.createElement("h3");
@@ -106,7 +109,8 @@ async function displayData(photographers, media) {
       }
 
       // Vérifie s'il s'agit d'une vidéo
-      if (mediaItem.video) { // Si le média est une vidéo
+      if (mediaItem.video) {
+        // Si le média est une vidéo
         const divVideo = document.createElement("div");
         const video = document.createElement("video");
         const videoTitle = document.createElement("h3");
@@ -146,7 +150,9 @@ async function LightBox() {
   const videoImageContainers = document.querySelectorAll(
     ".container-image-video"
   );
-
+  const videoImageContainersIMG = document.querySelectorAll(
+    ".container-image-video img"
+  );
   // Crée les éléments DOM pour les boutons de fermeture et de navigation dans la Lightbox
   const Close = document.createElement("i");
   Close.classList.add("fa-solid", "fa-xmark", "crossClose");
@@ -169,21 +175,27 @@ async function LightBox() {
   }
 
   // Écoute les événements de clic sur chaque conteneur d'image ou de vidéo
-  videoImageContainers.forEach((container, index) => {
+  videoImageContainersIMG.forEach((container, index) => {
     container.addEventListener("click", () => {
+      console.log(container);
       currentIndex = index;
       highlightCurrent();
       // Ajoute les boutons de fermeture et de navigation à l'élément actuel
-      container.appendChild(Close);
-      container.appendChild(flecheGauche);
-      container.appendChild(flecheDroite);
+      container.parentNode.appendChild(Close);
+      container.parentNode.appendChild(flecheGauche);
+      container.parentNode.appendChild(flecheDroite);
     });
   });
 
   // Gestionnaire de clic pour le bouton de fermeture
   Close.addEventListener("click", (event) => {
     event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
-    containersArray[currentIndex].classList.remove("lightBox-container"); // Cache la Lightbox
+    setTimeout(() => {
+      containersArray[currentIndex].removeChild(Close);
+      containersArray[currentIndex].removeChild(flecheGauche);
+      containersArray[currentIndex].removeChild(flecheDroite);
+      containersArray[currentIndex].classList.remove("lightBox-container"); // Cache la Lightbox
+    }, 0);
   });
 
   // Gestionnaire de clic pour le bouton de navigation vers la gauche
@@ -243,17 +255,6 @@ async function trier(photographers, media) {
 
   // Créer une map pour lier chaque photo à son conteneur DOM
   const containersMap = new Map();
-
-  // Fonction pour réorganiser les éléments dans l'ordre souhaité
-  function reorganiserElements(nouveauxIndices) {
-    const sectionPhoto = document.getElementById("photo");
-    nouveauxIndices.forEach((nouvelIndex, oldIndex) => {
-      sectionPhoto.insertBefore(
-        sectionPhoto.children[oldIndex],
-        sectionPhoto.children[nouvelIndex]
-      );
-    });
-  }
 
   // Fonction de tri par popularité
   function sortByPopularity() {
@@ -333,6 +334,64 @@ async function trier(photographers, media) {
     containersMap.set(mediaItem, container);
   });
 }
+// function qui gere les like et le prix
+function Like(photographers, media) {
+  const prix = document.querySelector(".p-prix");
+  const likeTotal = document.querySelector(".p-like");
+  const like = document.querySelectorAll(".likes");
+  const coeur = document.querySelectorAll(".coeur");
+  const urlParams = new URLSearchParams(window.location.search); // Obtient les paramètres de l'URL
+  const photographerId = urlParams.get("id"); // Récupère l'ID du photographe depuis les paramètres de l'URL
+  // Boucle à travers les photographes
+  photographers.forEach((photographer) => {
+    // Vérifie si l'ID du photographe correspond à l'ID spécifié dans le lien
+    if (photographer.id === parseInt(photographerId)) {
+      prix.textContent = photographer.price + "€ / jour";
+    }
+  });
+
+  totalPage = 0;
+  // Boucle à travers les médias pour calculer le total de likes pour la page
+  media.forEach((media) => {
+    if (media.photographerId === parseInt(photographerId)) {
+      totalPage += media.likes;
+      likeTotal.textContent = totalPage;
+    }
+  });
+
+  // Initialisation des compteurs de likes pour chaque média à partir du contenu initial des éléments like
+  let likesCounts = [];
+  like.forEach((likeItem) => {
+    likesCounts.push(parseInt(likeItem.textContent));
+  });
+
+  // Stocker les valeurs initiales des compteurs de likes dans un tableau séparé
+  let initialLikesCounts = likesCounts.slice();
+
+  // Mettre à jour le total en fonction des compteurs de likes
+  const updateTotal = () => {
+    totalPage = likesCounts.reduce((acc, cur) => acc + cur, 0);
+    likeTotal.textContent = totalPage;
+  };
+
+  // Afficher le total initial
+  updateTotal();
+
+  // Ajouter un gestionnaire d'événements à chaque coeur
+  coeur.forEach((coeur, index) => {
+    coeur.addEventListener("click", () => {
+      if (likesCounts[index] === initialLikesCounts[index]) {
+        likesCounts[index] += 1; // Ajouter 1 au compteur de likes
+        coeur.style.color = "green";
+      } else {
+        likesCounts[index] -= 1; // Soustraire 1 du compteur de likes
+        coeur.style.color = "#901c1c";
+      }
+      like[index].textContent = likesCounts[index]; // Mettre à jour le nombre de likes individuel
+      updateTotal(); // Mettre à jour le total après chaque clic sur un cœur
+    });
+  });
+}
 
 // Fonction d'initialisation de l'application
 async function init() {
@@ -347,6 +406,8 @@ async function init() {
 
   // Initialise la fonction de tri pour les médias
   trier(photographers, media);
+
+  Like(photographers, media);
 }
 
 // Appelle la fonction d'initialisation pour démarrer l'application

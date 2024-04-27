@@ -176,7 +176,6 @@ form input {
   height: 390px;
   width: calc(27.33% - 20px);
   z-index: 0;
-  cursor: grab;
   margin-top: 50px;
 }
 
@@ -184,6 +183,7 @@ form input {
   height: 350px;
   width: 100%;
   object-fit: cover;
+  cursor: grab;
 }
 
 .title-img {
@@ -206,6 +206,7 @@ form input {
   color: #901c1c;
   right: 0;
   top: 97.5%;
+  cursor: grab;
 }
 
 /********************* code de lightbox  *****************************/
@@ -263,4 +264,34 @@ form input {
   top: 47%;
   left: 12%;
   cursor: grab;
+}
+.container-like-prix{
+  position: fixed;
+  bottom: -5px;
+  right: 36px;
+  background-color: #DB8876;
+  width: 376px;
+  height: 78px;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-around;
+}
+.container-like{
+  display: flex;
+  justify-items: center;
+  gap: 5px;
+}
+.p-like{
+  font-size: 24px;
+  font-weight: 500;
+}
+.i-like{
+  position: relative;
+  top: 37%;
+  font-size: 21px;
+}
+.p-prix{
+  font-size: 24px;
+  font-weight: 500;
+
 }
