@@ -31,6 +31,7 @@
   border-radius: 50%;
   object-fit: cover;
 }
+/* ////// MODAL CONTACT////// */
 .contact_button {
   font-size: 20px;
   font-weight: bold;
@@ -57,21 +58,29 @@
   margin: auto;
   top: 30px;
   left: 25%;
+  z-index: 55;
 }
 
 .modal header {
   justify-content: space-between;
   width: 100%;
+  margin-bottom: 40px;
+  margin-top:10px;
 }
 
 .modal header img {
   cursor: pointer;
+  position: absolute;
+  top:30px;
+  right: 20px;
 }
 
 .modal header h2 {
   font-size: 64px;
   font-weight: normal;
-  text-align: center;
+  text-align: left;
+  align-items: self-start;
+ 
 }
 
 form {
@@ -101,13 +110,13 @@ form input {
   border-radius: 5px;
 }
 #Message {
-  padding-bottom: 120px;
+  padding-bottom: 100px;
   text-wrap: wrap;
 }
 .error-input {
   border: 3px solid red;
 }
-
+/* ///// tier:///////// */
 .titre-trier {
   position: absolute;
   left: 97px;
@@ -265,6 +274,7 @@ form input {
   left: 12%;
   cursor: grab;
 }
+/* ///////////////Like en bas de la page/////////////// */
 .container-like-prix{
   position: fixed;
   bottom: -5px;
