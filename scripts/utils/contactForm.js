@@ -1,10 +1,28 @@
 // Fonction pour afficher la modal de contact
-function displayModal() {
+function displayModal(event) {
   const modal = document.getElementById("contact_modal");
   const titreModal = document.querySelector(".titre-modal");
   const titre = document.querySelector(".photographer_page_Name").innerHTML;
   modal.style.display = "block"; // Affiche la modal en définissant son style sur "block"
   titreModal.innerHTML = "Contactez-moi <br>" + titre;
+
+  // Ajoute un gestionnaire d'événements pour le clic en dehors de la modal
+  window.addEventListener("click", outsideModalClick);
+
+  // Arrête la propagation de l'événement de clic pour éviter la fermeture immédiate de la modal
+  event.stopPropagation();
+}
+// Fonction pour gérer le clic en dehors de la modal
+function outsideModalClick(event) {
+  const modal = document.getElementById("contact_modal");
+  const btnModal = document.getElementById("submit");
+
+  // Vérifie si l'événement de clic s'est produit en dehors de la modal et du bouton de fermeture
+  if (!modal.contains(event.target) && event.target !== btnModal) {
+    closeModal(); // Ferme la modal
+    // Supprime l'écouteur d'événements une fois la modal fermée
+    window.removeEventListener("click", outsideModalClick);
+  }
 }
 
 // Fonction pour fermer la modal de contact
@@ -20,46 +38,47 @@ btnModal.addEventListener("click", (event) => {
   contact(); // Appelle la fonction contact pour valider le formulaire
 });
 
+
+
 // Fonction pour valider et soumettre le formulaire de contact
 function contact() {
   // Récupère les données du formulaire
-  const prenom = document.getElementById("Prenom");
-  const nom = document.getElementById("Nom");
-  const email = document.getElementById("Email");
-  const message = document.getElementById("Message");
-  const inputs = document.querySelectorAll("input");
+  const formData = document.querySelectorAll(".formData");
+  const input = document.querySelectorAll(".formData input");
+
+
   // Supprime la classe "error-input" de tous les champs de saisie
-  inputs.forEach((input) => {
-    input.classList.remove("error-input");
+  formData.forEach((formData) => {
+    formData.setAttribute("data-error-visible", "false");
   });
 
   // Vérifie si le formulaire est valide
   const isFormValid =
-    prenom.value.trim().length >= 2 &&
-    nom.value.trim().length >= 2 &&
-    isValidEmail(email.value.trim()) &&
-    message.value.trim().length >= 15;
+  input[0].value.trim().length >= 2 &&
+  input[1].value.trim().length >= 2 &&
+    isValidEmail(input[2].value.trim()) &&
+    input[3].value.trim().length >= 15;
 
   // Si le formulaire est valide, affiche les données dans la console et ferme la modal
   if (isFormValid) {
-    console.log(prenom.value.trim());
-    console.log(nom.value.trim());
-    console.log(email.value.trim());
-    console.log(message.value.trim());
+    console.log("Prenom : "+input[0].value.trim());
+    console.log("Nom : "+input[1].value.trim());
+    console.log("Email : "+input[2].value.trim());
+    console.log("Message : "+input[3].value.trim());
     closeModal();
   } else {
     // Sinon, ajoute la classe "error-input" aux champs de saisie invalides
-    if (prenom.value.trim().length < 2) {
-      prenom.classList.add("error-input");
+    if (input[0].value.trim().length < 2) {
+      formData[0].setAttribute("data-error-visible", "true");
     }
-    if (nom.value.trim().length < 2) {
-      nom.classList.add("error-input");
+    if (input[1].value.trim().length < 2) {
+      formData[1].setAttribute("data-error-visible", "true");
     }
-    if (!isValidEmail(email.value.trim())) {
-      email.classList.add("error-input");
+    if (!isValidEmail(input[2].value.trim())) {
+      formData[2].setAttribute("data-error-visible", "true");
     }
-    if (message.value.trim().length < 15) {
-      message.classList.add("error-input");
+    if (input[3].value.trim().length < 15) {
+      formData[3].setAttribute("data-error-visible", "true");
     }
   }
 }

@@ -15,7 +15,7 @@ function photographerTemplate(data) {
     const img = document.createElement("img");
     img.setAttribute("src", picture); // Attribution de la source de l'image
     img.setAttribute("alt", `photo de ${data.name}`); // Attribution du alt de l'image
-    img.setAttribute("aria-label", `${name}'s portrait`); // Utilisation de aria-label pour décrire l'image
+    article.setAttribute("aria-label", `${name}'s portrait`); // Utilisation de aria-label pour décrire l'image
     // Création d'un élément <h2> pour afficher le nom du photographe
     const h2 = document.createElement("h2");
     h2.textContent = name;
