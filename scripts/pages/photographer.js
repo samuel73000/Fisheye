@@ -179,7 +179,6 @@ async function LightBox() {
   // Écoute les événements de clic sur chaque conteneur d'image ou de vidéo
   videoImageContainersIMG.forEach((container, index) => {
     container.addEventListener("click", () => {
-      console.log(container);
       currentIndex = index;
       highlightCurrent();
       // Ajoute les boutons de fermeture et de navigation à l'élément actuel
@@ -226,41 +225,68 @@ async function LightBox() {
   });
 }
 
-
-
-// Fonction de tri pour les médias
-async function trier(photographers, media) {
-  // Sélection des éléments pour le tri
+// Fonction de tri
+async function trier() {
+  // Sélectionne les éléments DOM nécessaires
   const containerTrierSelect = document.querySelectorAll(
     ".container-trier .select-trier"
   );
-  const containerTrierBorder = document.querySelectorAll(
-    ".container-trier .border"
-  );
+  
   const flecheTrier = document.querySelector(".fleche-trier");
-  const urlParams = new URLSearchParams(window.location.search);
- 
-
+  let activeOption = "popularité"; // Déclare une variable  pour stocker le critère de tri actuel
   // Fonction pour ouvrir/fermer les options de tri
-  flecheTrier.addEventListener("click", () => {
-    containerTrierSelect.forEach((element, index) => {
-      if (index !== 0) {
-        // Évitez de modifier le premier élément
+  function toggleModal() {
+    containerTrierSelect.forEach((element) => {
+      // Vérifie si l'élément n'est pas actuellement sélectionné avant d'appliquer la classe off-trier
+      if (!element.classList.contains("isactive")) {
         element.classList.toggle("off-trier");
       }
     });
-    containerTrierBorder.forEach((element, index) => {
-      // Évitez de modifier le premier élément
-      element.classList.toggle("off-trier");
-    });
     flecheTrier.classList.toggle("fa-chevron-up");
     flecheTrier.classList.toggle("fa-chevron-down");
+
+    // Ajoute un appel à reorderTriOptions() lors de la fermeture de la modal
+    if (!flecheTrier.classList.contains("fa-chevron-up")) {
+      reorderTriOptions();
+    }
+  }
+ 
+ 
+  // Associe les événements de clic à la flèche de tri pour ouvrir/fermer la modal
+  flecheTrier.addEventListener("click", toggleModal);
+ 
+
+  // Fonction pour réorganiser les options de tri en fonction de l'option active
+  function reorderTriOptions() {
+    const containerTrier = document.querySelector(".container-trier");
+    if (activeOption) {
+      containerTrierSelect.forEach((element) => {
+        if (element.id === activeOption) {
+          element.classList.add("isactive");
+          containerTrier.insertBefore(element, containerTrier.firstChild);
+        } else {
+          element.classList.remove("isactive");
+        }
+      });
+    }
+  }
+
+  // Appelle la fonction de réorganisation une seule fois au chargement de la page
+  reorderTriOptions();
+
+  // Associe les événements de clic aux éléments de tri
+  containerTrierSelect.forEach((element) => {
+    element.addEventListener("click", (event) => {
+      const selectedOption = event.target.id;
+      if (selectedOption !== activeOption) {
+        // Met à jour le critère de tri actuel
+        activeOption = selectedOption;
+        reorderTriOptions();
+      }
+    });
   });
 
-  // Créer une map pour lier chaque photo à son conteneur DOM
-  const containersMap = new Map();
-
-  // Fonction de tri par popularité
+  // Fonctions de tri par popularité, date et titre (à implémenter)
   function sortByPopularity() {
     const sectionPhoto = document.getElementById("photo");
     const divs = Array.from(sectionPhoto.children);
@@ -279,7 +305,6 @@ async function trier(photographers, media) {
     });
   }
 
-  // Fonction de tri par date
   function sortByDate() {
     const sectionPhoto = document.getElementById("photo");
     const divs = Array.from(sectionPhoto.children);
@@ -298,7 +323,6 @@ async function trier(photographers, media) {
     });
   }
 
-  // Fonction de tri par titre
   function sortByTitle() {
     const sectionPhoto = document.getElementById("photo");
     const divs = Array.from(sectionPhoto.children);
@@ -316,24 +340,13 @@ async function trier(photographers, media) {
       sectionPhoto.appendChild(div);
     });
   }
-
   // Associer les événements de clic aux éléments de tri
   containerTrierSelect[0].addEventListener("click", sortByPopularity);
   containerTrierSelect[1].addEventListener("click", sortByDate);
   containerTrierSelect[2].addEventListener("click", sortByTitle);
-
-  // Appeler la fonction sortByPopularity() pour trier par popularité dès le chargement de la page
+  // Appelle la fonction de tri par défaut au chargement de la page
   sortByPopularity();
-
-  // Boucle à travers les médias et associer chaque média à son conteneur DOM dans containersMap
-  media.forEach((mediaItem) => {
-    const container = document.querySelector(
-      `[data-photo-id="${mediaItem.id}"]`
-    );
-    containersMap.set(mediaItem, container);
-  });
 }
-
 
 // function qui gere les like et le prix
 function Like(photographers, media) {
@@ -406,7 +419,7 @@ async function init() {
   LightBox();
 
   // Initialise la fonction de tri pour les médias
-  trier(photographers, media);
+  trier();
 
   Like(photographers, media);
 }

@@ -149,7 +149,7 @@ form input {
   text-align: center;
   margin-top: 20px;
   margin-left: 200px;
-  width: 0%;
+  width: 170px;
   z-index: 3;
   cursor: grab;
 }
@@ -163,21 +163,29 @@ form input {
 }
 
 .select-trier {
+  position: relative; /* Assure que le pseudo-élément est positionné par rapport à cet élément */
   box-shadow: 0px 4px 4px 0px #00000040;
   background-color: #901c1c;
   color: white;
   padding: 10px;
   border-radius: 5px;
-  width: 150px;
+  width: 100%;
   margin-top: -7px;
 }
 
-.border {
-  z-index: 2;
-  margin-left: 13px;
-  width: 140px;
-  border: #ffffff solid 1px;
-} 
+.select-trier::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%; /* Positionne le début de la barre au milieu de l'élément */
+  transform: translateX(-50%); /* Déplace la barre de moitié de sa propre largeur vers la gauche */
+  width: 150px; /* Largeur de la barre */
+  height: 1px; /* Hauteur de la barre */
+  background-color: white; /* Couleur de la barre */
+}
+.select-trier.isactive::before {
+  display: none; /* Supprime le pseudo-élément ::before lorsque la classe .isactive est présente */
+}
 .off-trier {
   display: none;
   visibility: hidden;
