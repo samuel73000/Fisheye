@@ -93,7 +93,8 @@ async function displayData(photographers, media) {
         imgPhoto.setAttribute("aria-label", `${mediaItem.title}'s portrait`); // Utilisation de aria-label pour décrire l'image
         imgTitle.textContent = mediaItem.title; // Titre de l'image
         likeCount.textContent = mediaItem.likes; // Nombre de likes
-        divImage.setAttribute("data-photo-id", mediaItem.id); // Attribution de l'ID du média au conteneur
+        divImage.setAttribute("data-photo-id", mediaItem.id); // Attribution de l'ID du média au conteneur pour le trie
+        divImage.setAttribute("data-date", mediaItem.date); // pour le trie
         heartIcon.classList.add("fa-solid", "fa-heart", "coeur"); // Ajout des classes pour l'icône "cœur"
         divImage.classList.add("container-image-video"); // Ajout de la classe pour le conteneur d'image
         imgPhoto.classList.add("photographer_page_photo_video"); // Ajout de la classe pour l'image
@@ -127,6 +128,7 @@ async function displayData(photographers, media) {
         likeCount.textContent = mediaItem.likes; // Nombre de likes
         videoTitle.textContent = mediaItem.title; // Titre de la vidéo
         divVideo.setAttribute("data-photo-id", mediaItem.id); // Attribution de l'ID du média au conteneur
+        divVideo.setAttribute("data-date", mediaItem.date);
         videoTitle.classList.add("title-img"); // Ajout de la classe pour le titre de la vidéo
         divVideo.classList.add("container-image-video"); // Ajout de la classe pour le conteneur de vidéo
         video.classList.add("photographer_page_photo_video"); // Ajout de la classe pour la vidéo
@@ -224,6 +226,8 @@ async function LightBox() {
   });
 }
 
+
+
 // Fonction de tri pour les médias
 async function trier(photographers, media) {
   // Sélection des éléments pour le tri
@@ -235,7 +239,7 @@ async function trier(photographers, media) {
   );
   const flecheTrier = document.querySelector(".fleche-trier");
   const urlParams = new URLSearchParams(window.location.search);
-  const photographerId = parseInt(urlParams.get("id")); // Récupérer l'ID du photographe depuis l'URL
+ 
 
   // Fonction pour ouvrir/fermer les options de tri
   flecheTrier.addEventListener("click", () => {
@@ -259,65 +263,57 @@ async function trier(photographers, media) {
   // Fonction de tri par popularité
   function sortByPopularity() {
     const sectionPhoto = document.getElementById("photo");
-    const filteredMedia = media.filter(
-      (photo) => photo.photographerId === photographerId
-    );
-    const sortedMedia = filteredMedia.sort((a, b) => b.likes - a.likes);
+    const divs = Array.from(sectionPhoto.children);
+    const sortedDivs = divs.sort((a, b) => {
+      const likesA = parseInt(a.querySelector(".likes").textContent);
+      const likesB = parseInt(b.querySelector(".likes").textContent);
+      return likesB - likesA;
+    });
 
-    // Supprimer tous les enfants de la sectionPhoto
-    sectionPhoto.innerHTML = ""; // Effacer le contenu de la section
+    // Vider la sectionPhoto
+    sectionPhoto.innerHTML = "";
 
-    // Ajouter les éléments triés dans le DOM dans le bon ordre
-    sortedMedia.forEach((photo) => {
-      const container = containersMap.get(photo);
-      if (container) {
-        // Vérifier si container existe
-        sectionPhoto.appendChild(container.cloneNode(true)); // Utiliser cloneNode pour ajouter une copie de l'élément conteneur
-      }
+    // Ajouter les divs triés dans le DOM dans le bon ordre
+    sortedDivs.forEach((div) => {
+      sectionPhoto.appendChild(div);
     });
   }
 
   // Fonction de tri par date
   function sortByDate() {
     const sectionPhoto = document.getElementById("photo");
-    const filteredMedia = media.filter(
-      (photo) => photo.photographerId === photographerId
-    );
-    const sortedMedia = filteredMedia.sort(
-      (a, b) => new Date(b.date) - new Date(a.date)
-    );
+    const divs = Array.from(sectionPhoto.children);
+    const sortedDivs = divs.sort((a, b) => {
+      const dateA = new Date(a.dataset.date);
+      const dateB = new Date(b.dataset.date);
+      return dateB.getTime() - dateA.getTime();
+    });
 
-    // Supprimer tous les enfants de la sectionPhoto
+    // Vider la sectionPhoto
     sectionPhoto.innerHTML = "";
 
-    // Ajouter les éléments triés dans le DOM dans le bon ordre
-    sortedMedia.forEach((photo) => {
-      const container = containersMap.get(photo);
-      if (container) {
-        sectionPhoto.appendChild(container.cloneNode(true));
-      }
+    // Ajouter les divs triés dans le DOM dans le bon ordre
+    sortedDivs.forEach((div) => {
+      sectionPhoto.appendChild(div);
     });
   }
 
   // Fonction de tri par titre
   function sortByTitle() {
     const sectionPhoto = document.getElementById("photo");
-    const filteredMedia = media.filter(
-      (photo) => photo.photographerId === photographerId
-    );
-    const sortedMedia = filteredMedia.sort((a, b) =>
-      a.title.localeCompare(b.title)
-    );
+    const divs = Array.from(sectionPhoto.children);
+    const sortedDivs = divs.sort((a, b) => {
+      const titleA = a.querySelector(".title-img").textContent;
+      const titleB = b.querySelector(".title-img").textContent;
+      return titleA.localeCompare(titleB);
+    });
 
-    // Supprimer tous les enfants de la sectionPhoto
+    // Vider la sectionPhoto
     sectionPhoto.innerHTML = "";
 
-    // Ajouter les éléments triés dans le DOM dans le bon ordre
-    sortedMedia.forEach((photo) => {
-      const container = containersMap.get(photo);
-      if (container) {
-        sectionPhoto.appendChild(container.cloneNode(true));
-      }
+    // Ajouter les divs triés dans le DOM dans le bon ordre
+    sortedDivs.forEach((div) => {
+      sectionPhoto.appendChild(div);
     });
   }
 
@@ -326,7 +322,10 @@ async function trier(photographers, media) {
   containerTrierSelect[1].addEventListener("click", sortByDate);
   containerTrierSelect[2].addEventListener("click", sortByTitle);
 
-  // Boucle à travers les médias et associe chaque média à son conteneur DOM dans containersMap
+  // Appeler la fonction sortByPopularity() pour trier par popularité dès le chargement de la page
+  sortByPopularity();
+
+  // Boucle à travers les médias et associer chaque média à son conteneur DOM dans containersMap
   media.forEach((mediaItem) => {
     const container = document.querySelector(
       `[data-photo-id="${mediaItem.id}"]`
@@ -334,6 +333,8 @@ async function trier(photographers, media) {
     containersMap.set(mediaItem, container);
   });
 }
+
+
 // function qui gere les like et le prix
 function Like(photographers, media) {
   const prix = document.querySelector(".p-prix");
