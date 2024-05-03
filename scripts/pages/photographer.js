@@ -231,7 +231,7 @@ async function trier() {
   const containerTrierSelect = document.querySelectorAll(
     ".container-trier .select-trier"
   );
-  
+
   const flecheTrier = document.querySelector(".fleche-trier");
   let activeOption = "popularité"; // Déclare une variable  pour stocker le critère de tri actuel
   // Fonction pour ouvrir/fermer les options de tri
@@ -250,11 +250,9 @@ async function trier() {
       reorderTriOptions();
     }
   }
- 
- 
+
   // Associe les événements de clic à la flèche de tri pour ouvrir/fermer la modal
   flecheTrier.addEventListener("click", toggleModal);
- 
 
   // Fonction pour réorganiser les options de tri en fonction de l'option active
   function reorderTriOptions() {

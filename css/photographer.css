@@ -66,13 +66,13 @@
   justify-content: space-between;
   width: 100%;
   margin-bottom: 40px;
-  margin-top:10px;
+  margin-top: 10px;
 }
 
 .modal header img {
   cursor: pointer;
   position: absolute;
-  top:30px;
+  top: 30px;
   right: 20px;
 }
 
@@ -81,7 +81,6 @@
   font-weight: normal;
   text-align: left;
   align-items: self-start;
- 
 }
 
 form {
@@ -118,7 +117,7 @@ form input {
 .formData[data-error]::after {
   content: attr(data-error);
   font-size: 1em;
-  color: #312E2E;
+  color: #312e2e;
   display: block;
   margin-top: -10px;
   margin-bottom: 0px;
@@ -178,7 +177,9 @@ form input {
   position: absolute;
   top: 0;
   left: 50%; /* Positionne le début de la barre au milieu de l'élément */
-  transform: translateX(-50%); /* Déplace la barre de moitié de sa propre largeur vers la gauche */
+  transform: translateX(
+    -50%
+  ); /* Déplace la barre de moitié de sa propre largeur vers la gauche */
   width: 150px; /* Largeur de la barre */
   height: 1px; /* Hauteur de la barre */
   background-color: white; /* Couleur de la barre */
@@ -190,11 +191,6 @@ form input {
   display: none;
   visibility: hidden;
 }
-
-
-
-
-
 
 #photo {
   margin-top: 56px;
@@ -300,33 +296,32 @@ form input {
   cursor: grab;
 }
 /* ///////////////Like en bas de la page/////////////// */
-.container-like-prix{
+.container-like-prix {
   position: fixed;
   bottom: -5px;
   right: 36px;
-  background-color: #DB8876;
+  background-color: #db8876;
   width: 376px;
   height: 78px;
   border-radius: 5px;
   display: flex;
   justify-content: space-around;
 }
-.container-like{
+.container-like {
   display: flex;
   justify-items: center;
   gap: 5px;
 }
-.p-like{
+.p-like {
   font-size: 24px;
   font-weight: 500;
 }
-.i-like{
+.i-like {
   position: relative;
   top: 37%;
   font-size: 21px;
 }
-.p-prix{
+.p-prix {
   font-size: 24px;
   font-weight: 500;
-
 }
