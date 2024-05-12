@@ -231,28 +231,48 @@ async function trier() {
   const containerTrierSelect = document.querySelectorAll(
     ".container-trier .select-trier"
   );
-
+  const containerTrier = document.querySelector(".container-trier");
   const flecheTrier = document.querySelector(".fleche-trier");
-  let activeOption = "popularité"; // Déclare une variable  pour stocker le critère de tri actuel
-  // Fonction pour ouvrir/fermer les options de tri
-  function toggleModal() {
-    containerTrierSelect.forEach((element) => {
-      // Vérifie si l'élément n'est pas actuellement sélectionné avant d'appliquer la classe off-trier
-      if (!element.classList.contains("isactive")) {
-        element.classList.toggle("off-trier");
-      }
-    });
-    flecheTrier.classList.toggle("fa-chevron-up");
-    flecheTrier.classList.toggle("fa-chevron-down");
 
-    // Ajoute un appel à reorderTriOptions() lors de la fermeture de la modal
-    if (!flecheTrier.classList.contains("fa-chevron-up")) {
-      reorderTriOptions();
+  let activeOption = "popularité"; // Déclare une variable  pour stocker le critère de tri actuel
+
+  // Fonction pour ouvrir/fermer les options de tri
+  function toggleModal(event) {
+    // Vérifie si l'événement est déclenché par la touche Entrée (code 13) ou la barre d'espace (code 32)
+    if (
+      (event.type === "keydown" &&
+        (event.key === "Enter" ||
+          event.keyCode === 13 ||
+          event.key === " " ||
+          event.keyCode === 32)) ||
+      event.type === "click"
+    ) {
+      containerTrierSelect.forEach((element) => {
+        // Vérifie si l'élément n'est pas actuellement sélectionné avant d'appliquer la classe off-trier
+        if (!element.classList.contains("isactive")) {
+          element.classList.toggle("off-trier");
+        }
+      });
+      flecheTrier.classList.toggle("fa-chevron-up");
+      flecheTrier.classList.toggle("fa-chevron-down");
+
+      // Ajoute un appel à reorderTriOptions() lors de la fermeture de la modal
+      if (!flecheTrier.classList.contains("fa-chevron-up")) {
+        reorderTriOptions();
+      }
     }
   }
 
-  // Associe les événements de clic à la flèche de tri pour ouvrir/fermer la modal
-  flecheTrier.addEventListener("click", toggleModal);
+  // Associe les événements de clic au container de trie pour ouvrir/fermer la modal
+  containerTrier.addEventListener("click", toggleModal);
+
+  // Associe l'événement keydown au container de trie pour ouvrir/fermer la modal
+  containerTrier.addEventListener("keydown", toggleModal);
+
+
+
+
+
 
   // Fonction pour réorganiser les options de tri en fonction de l'option active
   function reorderTriOptions() {
@@ -269,106 +289,164 @@ async function trier() {
     }
   }
 
-  // Appelle la fonction de réorganisation une seule fois au chargement de la page
+  // // Appelle la fonction de réorganisation une seule fois au chargement de la page
   reorderTriOptions();
 
-  // Associe les événements de clic aux éléments de tri
-  containerTrierSelect.forEach((element) => {
-    element.addEventListener("click", (event) => {
-      const selectedOption = event.target.id;
-      if (selectedOption !== activeOption) {
-        // Met à jour le critère de tri actuel
-        activeOption = selectedOption;
-        reorderTriOptions();
-      }
-    });
-  });
 
-  // Fonctions de tri par popularité, date et titre (à implémenter)
-  function sortByPopularity() {
-    const sectionPhoto = document.getElementById("photo");
-    const divs = Array.from(sectionPhoto.children);
-    const sortedDivs = divs.sort((a, b) => {
-      const likesA = parseInt(a.querySelector(".likes").textContent);
-      const likesB = parseInt(b.querySelector(".likes").textContent);
-      return likesB - likesA;
-    });
+// Associe les événements de clic et de touche Entrée/Espace aux éléments de tri
+containerTrierSelect.forEach((element) => {
+  element.addEventListener("click", handleTriSelection);
+  element.addEventListener("keydown", handleTriSelection);
+});
 
-    // Vider la sectionPhoto
-    sectionPhoto.innerHTML = "";
-
-    // Ajouter les divs triés dans le DOM dans le bon ordre
-    sortedDivs.forEach((div) => {
-      sectionPhoto.appendChild(div);
-    });
-
-
-
-// on mais les tab index au img et le btn des like ! 
-let tabindex = 12;
-for (let i = 0; i < sortedDivs.length; i++) {
-    // Définir l'attribut tabindex pour le premier enfant
-    sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
-    // Définir l'attribut tabindex pour le quatrième enfant
-    sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+// Définit la fonction de gestion de la sélection d'option de tri
+function handleTriSelection(event) {
+  // Si l'événement est déclenché par la touche Entrée (code 13) ou la barre d'espace (code 32)
+  if ((event.type === 'keydown' && (event.key === 'Enter' || event.keyCode === 13 || event.key === ' ' || event.keyCode === 32)) || event.type === 'click') {
+    const selectedOption = event.target.id;
+    if (selectedOption !== activeOption) {
+      // Met à jour le critère de tri actuel
+      activeOption = selectedOption;
+      reorderTriOptions();
+    }
   }
 }
 
-  function sortByDate() {
-    const sectionPhoto = document.getElementById("photo");
-    const divs = Array.from(sectionPhoto.children);
-    const sortedDivs = divs.sort((a, b) => {
-      const dateA = new Date(a.dataset.date);
-      const dateB = new Date(b.dataset.date);
-      return dateB.getTime() - dateA.getTime();
-    });
 
-    // Vider la sectionPhoto
-    sectionPhoto.innerHTML = "";
 
-    // Ajouter les divs triés dans le DOM dans le bon ordre
-    sortedDivs.forEach((div) => {
-      sectionPhoto.appendChild(div);
-    });
-    // on mais les tab index au img et le btn des like ! 
-let tabindex = 12;
-for (let i = 0; i < sortedDivs.length; i++) {
-    // Définir l'attribut tabindex pour le premier enfant
-    sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
-    // Définir l'attribut tabindex pour le quatrième enfant
-    sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  // Fonctions de tri par popularité, date et titre (à implémenter)
+  function sortByPopularity(event) {
+    // on mais des condition pour que le addeventlistner ce declence avec entrer
+    if (
+      (event.type === "keydown" &&
+        (event.key === "Enter" ||
+          event.keyCode === 13 ||
+          event.key === " " ||
+          event.keyCode === 32)) ||
+      event.type === "click"
+    ) {
+      const sectionPhoto = document.getElementById("photo");
+      const divs = Array.from(sectionPhoto.children);
+      const sortedDivs = divs.sort((a, b) => {
+        const likesA = parseInt(a.querySelector(".likes").textContent);
+        const likesB = parseInt(b.querySelector(".likes").textContent);
+        return likesB - likesA;
+      });
+
+      // Vider la sectionPhoto
+      sectionPhoto.innerHTML = "";
+
+      // Ajouter les divs triés dans le DOM dans le bon ordre
+      sortedDivs.forEach((div) => {
+        sectionPhoto.appendChild(div);
+      });
+
+      // on mais les tab index au img et le btn des like !
+      let tabindex = 12;
+      for (let i = 0; i < sortedDivs.length; i++) {
+        // Définir l'attribut tabindex pour le premier enfant
+        sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+        // Définir l'attribut tabindex pour le quatrième enfant
+        sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+      }
+    }
   }
+
+  function sortByDate(event) {
+    // on mais des condition pour que le addeventlistner ce declence avec entrer
+    if (
+      (event.type === "keydown" &&
+        (event.key === "Enter" ||
+          event.keyCode === 13 ||
+          event.key === " " ||
+          event.keyCode === 32)) ||
+      event.type === "click"
+    ) {
+      const sectionPhoto = document.getElementById("photo");
+      const divs = Array.from(sectionPhoto.children);
+      const sortedDivs = divs.sort((a, b) => {
+        const dateA = new Date(a.dataset.date);
+        const dateB = new Date(b.dataset.date);
+        return dateB.getTime() - dateA.getTime();
+      });
+
+      // Vider la sectionPhoto
+      sectionPhoto.innerHTML = "";
+
+      // Ajouter les divs triés dans le DOM dans le bon ordre
+      sortedDivs.forEach((div) => {
+        sectionPhoto.appendChild(div);
+      });
+      // on mais les tab index au img et le btn des like !
+      let tabindex = 12;
+      for (let i = 0; i < sortedDivs.length; i++) {
+        // Définir l'attribut tabindex pour le premier enfant
+        sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+        // Définir l'attribut tabindex pour le quatrième enfant
+        sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+      }
+    }
   }
 
-  function sortByTitle() {
-    const sectionPhoto = document.getElementById("photo");
-    const divs = Array.from(sectionPhoto.children);
-    const sortedDivs = divs.sort((a, b) => {
-      const titleA = a.querySelector(".title-img").textContent;
-      const titleB = b.querySelector(".title-img").textContent;
-      return titleA.localeCompare(titleB);
-    });
+  function sortByTitle(event) {
+    // on mais des condition pour que le addeventlistner ce declence avec entrer
+    if (
+      (event.type === "keydown" &&
+        (event.key === "Enter" ||
+          event.keyCode === 13 ||
+          event.key === " " ||
+          event.keyCode === 32)) ||
+      event.type === "click"
+    ) {
+      const sectionPhoto = document.getElementById("photo");
+      const divs = Array.from(sectionPhoto.children);
+      const sortedDivs = divs.sort((a, b) => {
+        const titleA = a.querySelector(".title-img").textContent;
+        const titleB = b.querySelector(".title-img").textContent;
+        return titleA.localeCompare(titleB);
+      });
 
-    // Vider la sectionPhoto
-    sectionPhoto.innerHTML = "";
+      // Vider la sectionPhoto
+      sectionPhoto.innerHTML = "";
 
-    // Ajouter les divs triés dans le DOM dans le bon ordre
-    sortedDivs.forEach((div) => {
-      sectionPhoto.appendChild(div);
-    });
-    // on mais les tab index au img et le btn des like ! 
-let tabindex = 12;
-for (let i = 0; i < sortedDivs.length; i++) {
-    // Définir l'attribut tabindex pour le premier enfant
-    sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
-    // Définir l'attribut tabindex pour le quatrième enfant
-    sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
-  }
+      // Ajouter les divs triés dans le DOM dans le bon ordre
+      sortedDivs.forEach((div) => {
+        sectionPhoto.appendChild(div);
+      });
+      // on mais les tab index au img et le btn des like !
+      let tabindex = 12;
+      for (let i = 0; i < sortedDivs.length; i++) {
+        // Définir l'attribut tabindex pour le premier enfant
+        sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+        // Définir l'attribut tabindex pour le quatrième enfant
+        sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+      }
+    }
   }
   // Associer les événements de clic aux éléments de tri
   containerTrierSelect[0].addEventListener("click", sortByPopularity);
   containerTrierSelect[1].addEventListener("click", sortByDate);
   containerTrierSelect[2].addEventListener("click", sortByTitle);
+
+  // Associer les événements keydown aux éléments de tri pour la touche Entrée et la barre d'espace
+  containerTrierSelect[0].addEventListener("keydown", sortByPopularity);
+  containerTrierSelect[1].addEventListener("keydown", sortByDate);
+  containerTrierSelect[2].addEventListener("keydown", sortByTitle);
+
   // Appelle la fonction de tri par défaut au chargement de la page
   sortByPopularity();
 }
