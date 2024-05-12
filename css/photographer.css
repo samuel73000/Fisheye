@@ -250,6 +250,7 @@ form input {
   right: 0;
   top: 97.5%;
   cursor: grab;
+  z-index: 5;
 }
 
 /********************* code de lightbox  *****************************/

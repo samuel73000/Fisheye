@@ -252,12 +252,11 @@ async function trier() {
     });
 
     // on mais les tab index au img et le btn des like !
-    let tabindex = 12;
     for (let i = 0; i < sortedDivs.length; i++) {
       // Définir l'attribut tabindex pour le premier enfant
-      sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+      sortedDivs[i].children[0].setAttribute("tabindex", 7);
       // Définir l'attribut tabindex pour le quatrième enfant
-      sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+      sortedDivs[i].children[3].setAttribute("tabindex", 7);
     }
     // Mettre à jour LightBox après le tri
     LightBox();
@@ -309,12 +308,11 @@ async function trier() {
         sectionPhoto.appendChild(div);
       });
       // on mais les tab index au img et le btn des like !
-      let tabindex = 12;
       for (let i = 0; i < sortedDivs.length; i++) {
         // Définir l'attribut tabindex pour le premier enfant
-        sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+        sortedDivs[i].children[0].setAttribute("tabindex", 7);
         // Définir l'attribut tabindex pour le quatrième enfant
-        sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+        sortedDivs[i].children[3].setAttribute("tabindex", 7);
       }
     }
     // Mettre à jour LightBox après le tri
@@ -348,12 +346,11 @@ async function trier() {
         sectionPhoto.appendChild(div);
       });
       // on mais les tab index au img et le btn des like !
-      let tabindex = 12;
       for (let i = 0; i < sortedDivs.length; i++) {
         // Définir l'attribut tabindex pour le premier enfant
-        sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+        sortedDivs[i].children[0].setAttribute("tabindex", 7);
         // Définir l'attribut tabindex pour le quatrième enfant
-        sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+        sortedDivs[i].children[3].setAttribute("tabindex", 7);
       }
     }
     // Mettre à jour LightBox après le tri
@@ -374,17 +371,20 @@ async function LightBox() {
   const videoImageContainers = document.querySelectorAll(
     ".container-image-video"
   );
-  const videoImageContainersIMG = document.querySelectorAll(
-    ".container-image-video img"
-  );
+
   // Crée les éléments DOM pour les boutons de fermeture et de navigation dans la Lightbox
-  const Close = document.createElement("i");
-  Close.classList.add("fa-solid", "fa-xmark", "crossClose");
+ 
   const flecheGauche = document.createElement("i");
   flecheGauche.classList.add("fa-solid", "fa-chevron-left", "flecheGauche");
+  flecheGauche.setAttribute("tabindex", 6); // Ajouter tabindex à flecheGauche
+
   const flecheDroite = document.createElement("i");
   flecheDroite.classList.add("fa-solid", "fa-chevron-right", "flecheDroite");
+  flecheDroite.setAttribute("tabindex", 6); // Ajouter tabindex à flecheDroite
 
+  const Close = document.createElement("i");
+  Close.classList.add("fa-solid", "fa-xmark", "crossClose");
+  Close.setAttribute("tabindex", 6); // Ajouter tabindex à Close
   // Convertit la NodeList en tableau pour pouvoir utiliser forEach
   const containersArray = Array.from(videoImageContainers);
 
@@ -399,21 +399,6 @@ async function LightBox() {
     containersArray[currentIndex].classList.add("lightBox-container");
   }
 
- 
-
-  videoImageContainers.forEach((container, index) => {
-    container.addEventListener("click", () => {
-      handleContainerAction(index);
-    });
-  
-    container.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
-        handleContainerAction(index);
-      }
-    });
-  });
-  
-  
   function handleContainerAction(index) {
     currentIndex = index;
     highlightCurrent();
@@ -423,6 +408,62 @@ async function LightBox() {
     videoImageContainers[currentIndex].appendChild(flecheDroite);
   }
 
+  videoImageContainers.forEach((container, index) => {
+    container.addEventListener("click", () => {
+      handleContainerAction(index);
+    });
+
+    container.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Enter" ||
+        event.key === " " ||
+        event.keyCode === 13 ||
+        event.keyCode === 32
+      ) {
+        handleContainerAction(index);
+        flecheGauche.focus();
+        flecheDroite.focus();
+        Close.focus()
+      }
+    });
+  });
+
+  // // Gestionnaire de clic pour le bouton de fermeture
+  // Close.addEventListener("click", (event) => {
+  //   event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
+  //   setTimeout(() => {
+  //     // Cache la Lightbox
+  //     containersArray[currentIndex].removeChild(Close);
+  //     containersArray[currentIndex].removeChild(flecheGauche);
+  //     containersArray[currentIndex].removeChild(flecheDroite);
+  //     containersArray[currentIndex].classList.remove("lightBox-container");
+  //   }, 0);
+  // });
+
+  // // Gestionnaire de clic pour le bouton de navigation vers la gauche
+  // flecheGauche.addEventListener("click", (event) => {
+  //   event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+  //   // Décrémente l'index tout en assurant qu'il reste dans la plage valide
+  //   currentIndex =
+  //     (currentIndex - 1 + containersArray.length) % containersArray.length;
+  //   highlightCurrent(); // Met en évidence l'élément actuellement affiché
+  //   // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+  //   containersArray[currentIndex].appendChild(Close);
+  //   containersArray[currentIndex].appendChild(flecheGauche);
+  //   containersArray[currentIndex].appendChild(flecheDroite);
+  // });
+
+  // // Gestionnaire de clic pour le bouton de navigation vers la droite
+  // flecheDroite.addEventListener("click", (event) => {
+  //   event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+  //   // Incrémente l'index tout en assurant qu'il reste dans la plage valide
+  //   currentIndex = (currentIndex + 1) % containersArray.length;
+  //   highlightCurrent(); // Met en évidence l'élément actuellement affiché
+  //   // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+  //   containersArray[currentIndex].appendChild(Close);
+  //   containersArray[currentIndex].appendChild(flecheGauche);
+  //   containersArray[currentIndex].appendChild(flecheDroite);
+  // });
 
 
 
@@ -435,42 +476,87 @@ async function LightBox() {
 
 
 
-  // Gestionnaire de clic pour le bouton de fermeture
-  Close.addEventListener("click", (event) => {
-    event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
-    setTimeout(() => {
+
+
+
+
+
+
+
+
+
+
+// Gestionnaire de clic pour le bouton de fermeture
+Close.addEventListener("click", (event) => {
+  closeLightbox(event);
+});
+
+// Gestionnaire de clic pour le bouton de navigation vers la gauche
+flecheGauche.addEventListener("click", (event) => {
+  navigateLeft(event);
+});
+
+// Gestionnaire de clic pour le bouton de navigation vers la droite
+flecheDroite.addEventListener("click", (event) => {
+  navigateRight(event);
+});
+
+// Ajoutez la gestion de l'événement keydown pour le bouton de fermeture
+Close.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
+      closeLightbox(event);
+  }
+});
+
+// Ajoutez la gestion de l'événement keydown pour le bouton de navigation vers la gauche
+flecheGauche.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
+      navigateLeft(event);
+  }
+});
+
+// Ajoutez la gestion de l'événement keydown pour le bouton de navigation vers la droite
+flecheDroite.addEventListener("keydown", (event) => {
+  if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
+      navigateRight(event);
+  }
+});
+
+// Fonction pour fermer la Lightbox
+function closeLightbox(event) {
+  event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
+  setTimeout(() => {
       // Cache la Lightbox
       containersArray[currentIndex].removeChild(Close);
       containersArray[currentIndex].removeChild(flecheGauche);
       containersArray[currentIndex].removeChild(flecheDroite);
       containersArray[currentIndex].classList.remove("lightBox-container");
-    }, 0);
-  });
+  }, 0);
+}
 
-  // Gestionnaire de clic pour le bouton de navigation vers la gauche
-  flecheGauche.addEventListener("click", (event) => {
-    event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
-    // Décrémente l'index tout en assurant qu'il reste dans la plage valide
-    currentIndex =
-      (currentIndex - 1 + containersArray.length) % containersArray.length;
-    highlightCurrent(); // Met en évidence l'élément actuellement affiché
-    // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
-    containersArray[currentIndex].appendChild(Close);
-    containersArray[currentIndex].appendChild(flecheGauche);
-    containersArray[currentIndex].appendChild(flecheDroite);
-  });
+// Fonction pour naviguer vers la gauche
+function navigateLeft(event) {
+  event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+  // Décrémente l'index tout en assurant qu'il reste dans la plage valide
+  currentIndex = (currentIndex - 1 + containersArray.length) % containersArray.length;
+  highlightCurrent(); // Met en évidence l'élément actuellement affiché
+  // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+  containersArray[currentIndex].appendChild(Close);
+  containersArray[currentIndex].appendChild(flecheGauche);
+  containersArray[currentIndex].appendChild(flecheDroite);
+}
 
-  // Gestionnaire de clic pour le bouton de navigation vers la droite
-  flecheDroite.addEventListener("click", (event) => {
-    event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
-    // Incrémente l'index tout en assurant qu'il reste dans la plage valide
-    currentIndex = (currentIndex + 1) % containersArray.length;
-    highlightCurrent(); // Met en évidence l'élément actuellement affiché
-    // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
-    containersArray[currentIndex].appendChild(Close);
-    containersArray[currentIndex].appendChild(flecheGauche);
-    containersArray[currentIndex].appendChild(flecheDroite);
-  });
+// Fonction pour naviguer vers la droite
+function navigateRight(event) {
+  event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+  // Incrémente l'index tout en assurant qu'il reste dans la plage valide
+  currentIndex = (currentIndex + 1) % containersArray.length;
+  highlightCurrent(); // Met en évidence l'élément actuellement affiché
+  // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+  containersArray[currentIndex].appendChild(Close);
+  containersArray[currentIndex].appendChild(flecheGauche);
+  containersArray[currentIndex].appendChild(flecheDroite);
+}
 }
 
 // function qui gere les like et le prix
@@ -517,20 +603,43 @@ function Like(photographers, media) {
   // Afficher le total initial
   updateTotal();
 
-  // Ajouter un gestionnaire d'événements à chaque coeur
-  coeur.forEach((coeur, index) => {
-    coeur.addEventListener("click", () => {
-      if (likesCounts[index] === initialLikesCounts[index]) {
-        likesCounts[index] += 1; // Ajouter 1 au compteur de likes
-        coeur.style.color = "green";
-      } else {
-        likesCounts[index] -= 1; // Soustraire 1 du compteur de likes
-        coeur.style.color = "#901c1c";
-      }
-      like[index].textContent = likesCounts[index]; // Mettre à jour le nombre de likes individuel
-      updateTotal(); // Mettre à jour le total après chaque clic sur un cœur
-    });
+
+// Ajouter un gestionnaire d'événements à chaque coeur
+coeur.forEach((coeur, index) => {
+  coeur.addEventListener("click", (event) => {
+      event.stopPropagation(); // empêche l'ouverture de la lightbox au clic sur le coeur
+      toggleLike(index);
   });
+
+  coeur.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
+          event.stopPropagation(); // empêche l'ouverture de la lightbox lors de la pression de la touche "Enter" ou de la barre d'espace sur le coeur
+          toggleLike(index);
+      }
+  });
+});
+
+// Fonction pour basculer l'état du bouton "J'aime"
+function toggleLike(index) {
+  if (likesCounts[index] === initialLikesCounts[index]) {
+      likesCounts[index] += 1; // Ajouter 1 au compteur de likes
+      coeur[index].style.color = "green";
+  } else {
+      likesCounts[index] -= 1; // Soustraire 1 du compteur de likes
+      coeur[index].style.color = "#901c1c";
+  }
+  like[index].textContent = likesCounts[index]; // Mettre à jour le nombre de likes individuel
+  updateTotal(); // Mettre à jour le total après chaque clic sur un cœur
+}
+
+
+
+
+
+
+
+
+
 }
 
 // Fonction d'initialisation de l'application

@@ -33,9 +33,9 @@
       <p class="titre-trier">Trier par</p>
       <div class="container-trier">
         <i class="fa-solid fa-chevron-up fleche-trier"></i>
-        <div class="select-trier" id="popularité" tabindex="9">Popularité</div>
-        <div class="select-trier off-trier" id="date" tabindex="10">Date</div>
-        <div class="select-trier off-trier" id="titre" tabindex="11">Titre</div>
+        <div class="select-trier" id="popularité" tabindex="5">Popularité</div>
+        <div class="select-trier off-trier" id="date" tabindex="5">Date</div>
+        <div class="select-trier off-trier" id="titre" tabindex="5">Titre</div>
       </div>
 
       <section id="photo"></section>
@@ -44,7 +44,7 @@
       <div class="modal">
         <header>
           <h2 class="titre-modal"></h2>
-          <button onclick="closeModal()" tabindex="8">
+          <button onclick="closeModal()" tabindex="4">
             <i class="fa-solid fa-xmark fa-2xl"></i>
           </button>
         </header>
@@ -71,7 +71,7 @@
           >
             <label for="last">Nom</label>
             <input
-              tabindex="4"
+              tabindex="3"
               class="text-control"
               type="text"
               id="last"
@@ -87,7 +87,7 @@
           >
             <label for="email">Email</label>
             <input
-              tabindex="5"
+              tabindex="3"
               class="text-control"
               type="email"
               id="email"
@@ -100,7 +100,7 @@
           >
             <label for="Message">Message</label>
             <input
-              tabindex="6"
+              tabindex="3"
               class="text-control"
               type="text"
               id="Message"
@@ -109,7 +109,12 @@
               required
             /><br />
           </div>
-          <button class="contact_button" type="button" id="submit" tabindex="7">
+          <button
+            class="contact_button"
+            type="button"
+            id="submit"
+            tabindex="3"
+          >
             Envoyer
           </button>
         </form>
