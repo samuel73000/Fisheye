@@ -428,63 +428,6 @@ async function LightBox() {
     });
   });
 
-  // // Gestionnaire de clic pour le bouton de fermeture
-  // Close.addEventListener("click", (event) => {
-  //   event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
-  //   setTimeout(() => {
-  //     // Cache la Lightbox
-  //     containersArray[currentIndex].removeChild(Close);
-  //     containersArray[currentIndex].removeChild(flecheGauche);
-  //     containersArray[currentIndex].removeChild(flecheDroite);
-  //     containersArray[currentIndex].classList.remove("lightBox-container");
-  //   }, 0);
-  // });
-
-  // // Gestionnaire de clic pour le bouton de navigation vers la gauche
-  // flecheGauche.addEventListener("click", (event) => {
-  //   event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
-  //   // Décrémente l'index tout en assurant qu'il reste dans la plage valide
-  //   currentIndex =
-  //     (currentIndex - 1 + containersArray.length) % containersArray.length;
-  //   highlightCurrent(); // Met en évidence l'élément actuellement affiché
-  //   // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
-  //   containersArray[currentIndex].appendChild(Close);
-  //   containersArray[currentIndex].appendChild(flecheGauche);
-  //   containersArray[currentIndex].appendChild(flecheDroite);
-  // });
-
-  // // Gestionnaire de clic pour le bouton de navigation vers la droite
-  // flecheDroite.addEventListener("click", (event) => {
-  //   event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
-  //   // Incrémente l'index tout en assurant qu'il reste dans la plage valide
-  //   currentIndex = (currentIndex + 1) % containersArray.length;
-  //   highlightCurrent(); // Met en évidence l'élément actuellement affiché
-  //   // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
-  //   containersArray[currentIndex].appendChild(Close);
-  //   containersArray[currentIndex].appendChild(flecheGauche);
-  //   containersArray[currentIndex].appendChild(flecheDroite);
-  // });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // Gestionnaire de clic pour le bouton de fermeture
 Close.addEventListener("click", (event) => {
@@ -557,7 +500,11 @@ function navigateRight(event) {
   containersArray[currentIndex].appendChild(flecheGauche);
   containersArray[currentIndex].appendChild(flecheDroite);
 }
+
+
 }
+
+
 
 // function qui gere les like et le prix
 function Like(photographers, media) {
