@@ -376,15 +376,15 @@ async function LightBox() {
  
   const flecheGauche = document.createElement("i");
   flecheGauche.classList.add("fa-solid", "fa-chevron-left", "flecheGauche");
-  flecheGauche.setAttribute("tabindex", 6); // Ajouter tabindex à flecheGauche
+  flecheGauche.setAttribute("tabindex", 7); // Ajouter tabindex à flecheGauche
 
   const flecheDroite = document.createElement("i");
   flecheDroite.classList.add("fa-solid", "fa-chevron-right", "flecheDroite");
-  flecheDroite.setAttribute("tabindex", 6); // Ajouter tabindex à flecheDroite
+  flecheDroite.setAttribute("tabindex", 7); // Ajouter tabindex à flecheDroite
 
   const Close = document.createElement("i");
   Close.classList.add("fa-solid", "fa-xmark", "crossClose");
-  Close.setAttribute("tabindex", 6); // Ajouter tabindex à Close
+  Close.setAttribute("tabindex", 7); // Ajouter tabindex à Close
   // Convertit la NodeList en tableau pour pouvoir utiliser forEach
   const containersArray = Array.from(videoImageContainers);
 
@@ -393,7 +393,6 @@ async function LightBox() {
   // Fonction pour mettre en évidence l'élément actuellement affiché dans la Lightbox
   function highlightCurrent() {
     containersArray.forEach((container) => {
-      console.log(containersArray);
       container.classList.remove("lightBox-container");
     });
     containersArray[currentIndex].classList.add("lightBox-container");
@@ -578,11 +577,6 @@ function toggleLike(index) {
   like[index].textContent = likesCounts[index]; // Mettre à jour le nombre de likes individuel
   updateTotal(); // Mettre à jour le total après chaque clic sur un cœur
 }
-
-
-
-
-
 
 
 

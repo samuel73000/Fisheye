@@ -291,6 +291,7 @@ form input {
   right: 12.5%;
   top: 5%;
   cursor: grab;
+
 }
 
 .lightBox-container .flecheDroite {
@@ -300,6 +301,7 @@ form input {
   top: 47%;
   right: 12%;
   cursor: grab;
+ 
 }
 .lightBox-container .flecheGauche {
   font-size: 60px;
@@ -308,6 +310,7 @@ form input {
   top: 47%;
   left: 12%;
   cursor: grab;
+  
 }
 /* ///////////////Like en bas de la page/////////////// */
 .container-like-prix {
