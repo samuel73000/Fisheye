@@ -16,22 +16,22 @@
   </head>
   <body>
     <header>
-      <a href="./index.html">
+      <a href="./index.html" tabindex="1">
         <img src="assets/images/logo.png" class="logo" />
       </a>
     </header>
     <main id="main">
       <div class="photograph-header">
-        <button class="contact_button" onclick="displayModal(event)">
+        <button class="contact_button" onclick="displayModal(event)"  tabindex="2">
           Contactez-moi
         </button>
       </div>
       <p class="titre-trier">Trier par</p>
       <div class="container-trier">
         <i class="fa-solid fa-chevron-up fleche-trier"></i>
-        <div class="select-trier" id="popularité">Popularité</div>
-        <div class="select-trier off-trier" id="date">Date</div>
-        <div class="select-trier off-trier" id="titre">Titre</div>
+        <div class="select-trier" id="popularité" tabindex="9">Popularité</div>
+        <div class="select-trier off-trier" id="date" tabindex="10" >Date</div>
+        <div class="select-trier off-trier" id="titre" tabindex="11">Titre</div>
       </div>
 
       <section id="photo"></section>
@@ -40,7 +40,7 @@
       <div class="modal">
         <header>
           <h2 class="titre-modal"></h2>
-          <img src="assets/icons/close.svg" onclick="closeModal()" />
+          <img src="assets/icons/close.svg" onclick="closeModal()" tabindex="8" />
         </header>
         <form>
           <div
@@ -49,6 +49,7 @@
           >
             <label for="first">Prenom</label>
             <input
+            tabindex="3"
               class="text-control"
               type="text"
               id="first"
@@ -64,6 +65,7 @@
           >
             <label for="last">Nom</label>
             <input
+            tabindex="4"
               class="text-control"
               type="text"
               id="last"
@@ -79,6 +81,7 @@
           >
             <label for="email">Email</label>
             <input
+            tabindex="5"
               class="text-control"
               type="email"
               id="email"
@@ -91,6 +94,7 @@
           >
             <label for="Message">Message</label>
             <input
+            tabindex="6"
               class="text-control"
               type="text"
               id="Message"
@@ -99,7 +103,7 @@
               required
             /><br />
           </div>
-          <button class="contact_button" type="button" id="submit">
+          <button class="contact_button" type="button" id="submit" tabindex="7">
             Envoyer
           </button>
         </form>

@@ -301,7 +301,18 @@ async function trier() {
     sortedDivs.forEach((div) => {
       sectionPhoto.appendChild(div);
     });
+
+
+
+// on mais les tab index au img et le btn des like ! 
+let tabindex = 12;
+for (let i = 0; i < sortedDivs.length; i++) {
+    // Définir l'attribut tabindex pour le premier enfant
+    sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+    // Définir l'attribut tabindex pour le quatrième enfant
+    sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
   }
+}
 
   function sortByDate() {
     const sectionPhoto = document.getElementById("photo");
@@ -319,6 +330,14 @@ async function trier() {
     sortedDivs.forEach((div) => {
       sectionPhoto.appendChild(div);
     });
+    // on mais les tab index au img et le btn des like ! 
+let tabindex = 12;
+for (let i = 0; i < sortedDivs.length; i++) {
+    // Définir l'attribut tabindex pour le premier enfant
+    sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+    // Définir l'attribut tabindex pour le quatrième enfant
+    sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+  }
   }
 
   function sortByTitle() {
@@ -337,6 +356,14 @@ async function trier() {
     sortedDivs.forEach((div) => {
       sectionPhoto.appendChild(div);
     });
+    // on mais les tab index au img et le btn des like ! 
+let tabindex = 12;
+for (let i = 0; i < sortedDivs.length; i++) {
+    // Définir l'attribut tabindex pour le premier enfant
+    sortedDivs[i].children[0].setAttribute("tabindex", tabindex++);
+    // Définir l'attribut tabindex pour le quatrième enfant
+    sortedDivs[i].children[3].setAttribute("tabindex", tabindex++);
+  }
   }
   // Associer les événements de clic aux éléments de tri
   containerTrierSelect[0].addEventListener("click", sortByPopularity);
