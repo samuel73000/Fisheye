@@ -17,7 +17,7 @@
   <body>
     <header>
       <a href="./index.html" tabindex="1">
-        <img src="assets/images/logo.png" class="logo" />
+        <img src="assets/images/logo.png" class="logo du site" aria-label="retour page home"  />
       </a>
     </header>
     <main id="main">
@@ -30,12 +30,12 @@
           Contactez-moi
         </button>
       </div>
-      <p class="titre-trier">Trier par</p>
+      <p class="titre-trier" tabindex="5" aria-label="choisir un trie des photo">Trier par</p>
       <div class="container-trier">
         <i class="fa-solid fa-chevron-up fleche-trier"></i>
-        <div class="select-trier" id="popularité" tabindex="5">Popularité</div>
-        <div class="select-trier off-trier" id="date" tabindex="5">Date</div>
-        <div class="select-trier off-trier" id="titre" tabindex="5">Titre</div>
+        <div class="select-trier" id="popularité" tabindex="5" aria-label="bouton trier par popularitée">Popularité</div>
+        <div class="select-trier off-trier" id="date" tabindex="5" aria-label="bouton trier par date">Date</div>
+        <div class="select-trier off-trier" id="titre" tabindex="5" aria-label="bouton trier par titre">Titre</div>
       </div>
 
       <section id="photo"></section>
@@ -44,7 +44,7 @@
       <div class="modal">
         <header>
           <h2 class="titre-modal"></h2>
-          <button onclick="closeModal()" tabindex="4">
+          <button onclick="closeModal()" tabindex="4" aria-label="bouton fermer contact">
             <i class="fa-solid fa-xmark fa-2xl"></i>
           </button>
         </header>
@@ -63,6 +63,7 @@
               pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'\-]+$"
               minlength="2"
               required
+              aria-label="entrer votre prénon"
             /><br />
           </div>
           <div
@@ -79,6 +80,7 @@
               pattern="^[A-Za-zÀ-ÖØ-öø-ÿ\s'\-]+$"
               minlength="2"
               required
+              aria-label="entrer votre non"
             /><br />
           </div>
           <div
@@ -92,6 +94,7 @@
               type="email"
               id="email"
               required
+              aria-label="entrer votre email"
             /><br />
           </div>
           <div
@@ -107,6 +110,7 @@
               name="Message"
               minlength="15"
               required
+              aria-label="entrer votre méssage"
             /><br />
           </div>
           <button
@@ -114,6 +118,7 @@
             type="button"
             id="submit"
             tabindex="3"
+            aria-label="bouton envoyer"
           >
             Envoyer
           </button>

@@ -43,6 +43,7 @@ async function displayData(photographers, media) {
 
       // Crée des éléments DOM pour afficher les données du photographe
       const divForName = document.createElement("div");
+      divForName.setAttribute("tabindex", 2);
       const pForCityCountry = document.createElement("p");
       pForCityCountry.classList.add("photographer_page_country");
       const pForTagLine = document.createElement("p");
@@ -51,6 +52,7 @@ async function displayData(photographers, media) {
       h2ForName.classList.add("photographer_page_Name");
       const imgPP = document.createElement("img");
       imgPP.classList.add("photographer_page_PP");
+      imgPP.setAttribute("tabindex", 5);
 
       // Remplit les éléments avec les données du photographe
       pForCityCountry.textContent = `${photographer.city}, ${photographer.country}`; // Ville et pays du photographe
@@ -90,12 +92,15 @@ async function displayData(photographers, media) {
           `../../assets/photographers/photo/${mediaItem.image}`
         ); // Chemin vers l'image
         imgPhoto.setAttribute("alt", `photo de ${mediaItem.title}`); // Attribution du alt de l'image
-        imgPhoto.setAttribute("aria-label", `${mediaItem.title}'s portrait`); // Utilisation de aria-label pour décrire l'image
         imgTitle.textContent = mediaItem.title; // Titre de l'image
         likeCount.textContent = mediaItem.likes; // Nombre de likes
         divImage.setAttribute("data-photo-id", mediaItem.id); // Attribution de l'ID du média au conteneur pour le trie
         divImage.setAttribute("data-date", mediaItem.date); // pour le trie
         heartIcon.classList.add("fa-solid", "fa-heart", "coeur"); // Ajout des classes pour l'icône "cœur"
+        heartIcon.setAttribute(
+          "aria-label",
+          `coeur pour liker ${mediaItem.title}`
+        );
         divImage.classList.add("container-image-video"); // Ajout de la classe pour le conteneur d'image
         imgPhoto.classList.add("photographer_page_photo_video"); // Ajout de la classe pour l'image
         imgTitle.classList.add("title-img"); // Ajout de la classe pour le titre de l'image
@@ -124,7 +129,7 @@ async function displayData(photographers, media) {
         ); // Chemin vers la vidéo
         video.setAttribute("controls", "controls"); // Ajoute des contrôles de lecture à la vidéo
         video.setAttribute("alt", `photo de ${mediaItem.title}`); // Attribution du alt de l'image
-        video.setAttribute("aria-label", `${mediaItem.title}'s portrait`); // Utilisation de aria-label pour décrire l'image
+        video.setAttribute("aria-label", `${mediaItem.title}`); // Utilisation de aria-label pour décrire l'image
         likeCount.textContent = mediaItem.likes; // Nombre de likes
         videoTitle.textContent = mediaItem.title; // Titre de la vidéo
         divVideo.setAttribute("data-photo-id", mediaItem.id); // Attribution de l'ID du média au conteneur
@@ -134,7 +139,10 @@ async function displayData(photographers, media) {
         video.classList.add("photographer_page_photo_video"); // Ajout de la classe pour la vidéo
         likeCount.classList.add("likes"); // Ajout de la classe pour le nombre de likes
         heartIcon.classList.add("fa-solid", "fa-heart", "coeur"); // Ajout des classes pour l'icône "cœur"
-
+        heartIcon.setAttribute(
+          "aria-label",
+          `coeur pour liker ${mediaItem.title}`
+        );
         // Ajoute les éléments au DOM
         divVideo.appendChild(video);
         sectionPhoto.appendChild(divVideo);
@@ -373,18 +381,21 @@ async function LightBox() {
   );
 
   // Crée les éléments DOM pour les boutons de fermeture et de navigation dans la Lightbox
- 
+
   const flecheGauche = document.createElement("i");
   flecheGauche.classList.add("fa-solid", "fa-chevron-left", "flecheGauche");
   flecheGauche.setAttribute("tabindex", 7); // Ajouter tabindex à flecheGauche
+  flecheGauche.setAttribute("aria-label", "bouton passer a l'image précédent");
 
   const flecheDroite = document.createElement("i");
   flecheDroite.classList.add("fa-solid", "fa-chevron-right", "flecheDroite");
   flecheDroite.setAttribute("tabindex", 7); // Ajouter tabindex à flecheDroite
+  flecheDroite.setAttribute("aria-label", "bouton passer a l'image suivante");
 
   const Close = document.createElement("i");
   Close.classList.add("fa-solid", "fa-xmark", "crossClose");
   Close.setAttribute("tabindex", 7); // Ajouter tabindex à Close
+  Close.setAttribute("aria-label", "bouton pour fermer la lightBox");
   // Convertit la NodeList en tableau pour pouvoir utiliser forEach
   const containersArray = Array.from(videoImageContainers);
 
@@ -422,93 +433,106 @@ async function LightBox() {
         handleContainerAction(index);
         flecheGauche.focus();
         flecheDroite.focus();
-        Close.focus()
+        Close.focus();
       }
     });
   });
 
+  // Gestionnaire de clic pour le bouton de fermeture
+  Close.addEventListener("click", (event) => {
+    closeLightbox(event);
+  });
 
-// Gestionnaire de clic pour le bouton de fermeture
-Close.addEventListener("click", (event) => {
-  closeLightbox(event);
-});
+  // Gestionnaire de clic pour le bouton de navigation vers la gauche
+  flecheGauche.addEventListener("click", (event) => {
+    navigateLeft(event);
+  });
 
-// Gestionnaire de clic pour le bouton de navigation vers la gauche
-flecheGauche.addEventListener("click", (event) => {
-  navigateLeft(event);
-});
+  // Gestionnaire de clic pour le bouton de navigation vers la droite
+  flecheDroite.addEventListener("click", (event) => {
+    navigateRight(event);
+  });
 
-// Gestionnaire de clic pour le bouton de navigation vers la droite
-flecheDroite.addEventListener("click", (event) => {
-  navigateRight(event);
-});
-
-// Ajoutez la gestion de l'événement keydown pour le bouton de fermeture
-Close.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
+  // Ajoutez la gestion de l'événement keydown pour le bouton de fermeture
+  Close.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Enter" ||
+      event.key === " " ||
+      event.keyCode === 13 ||
+      event.keyCode === 32
+    ) {
       closeLightbox(event);
-  }
-});
+    }
+  });
 
-// Ajoutez la gestion de l'événement keydown pour le bouton de navigation vers la gauche
-flecheGauche.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
+  // Ajoutez la gestion de l'événement keydown pour le bouton de navigation vers la gauche
+  flecheGauche.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Enter" ||
+      event.key === " " ||
+      event.keyCode === 13 ||
+      event.keyCode === 32
+    ) {
       navigateLeft(event);
-  }
-});
+    }
+  });
 
-// Ajoutez la gestion de l'événement keydown pour le bouton de navigation vers la droite
-flecheDroite.addEventListener("keydown", (event) => {
-  if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
+  // Ajoutez la gestion de l'événement keydown pour le bouton de navigation vers la droite
+  flecheDroite.addEventListener("keydown", (event) => {
+    if (
+      event.key === "Enter" ||
+      event.key === " " ||
+      event.keyCode === 13 ||
+      event.keyCode === 32
+    ) {
       navigateRight(event);
-  }
-});
+    }
+  });
 
-// Fonction pour fermer la Lightbox
-function closeLightbox(event) {
-  event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
-  setTimeout(() => {
+  // Fonction pour fermer la Lightbox
+  function closeLightbox(event) {
+    event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
+    setTimeout(() => {
       // Cache la Lightbox
       containersArray[currentIndex].removeChild(Close);
       containersArray[currentIndex].removeChild(flecheGauche);
       containersArray[currentIndex].removeChild(flecheDroite);
       containersArray[currentIndex].classList.remove("lightBox-container");
-  }, 0);
+    }, 0);
+  }
+
+  // Fonction pour naviguer vers la gauche
+  function navigateLeft(event) {
+    event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+    // Décrémente l'index tout en assurant qu'il reste dans la plage valide
+    currentIndex =
+      (currentIndex - 1 + containersArray.length) % containersArray.length;
+    highlightCurrent(); // Met en évidence l'élément actuellement affiché
+    // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+    containersArray[currentIndex].appendChild(Close);
+    containersArray[currentIndex].appendChild(flecheGauche);
+    containersArray[currentIndex].appendChild(flecheDroite);
+  }
+
+  // Fonction pour naviguer vers la droite
+  function navigateRight(event) {
+    event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
+    // Incrémente l'index tout en assurant qu'il reste dans la plage valide
+    currentIndex = (currentIndex + 1) % containersArray.length;
+    highlightCurrent(); // Met en évidence l'élément actuellement affiché
+    // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
+    containersArray[currentIndex].appendChild(Close);
+    containersArray[currentIndex].appendChild(flecheGauche);
+    containersArray[currentIndex].appendChild(flecheDroite);
+  }
 }
-
-// Fonction pour naviguer vers la gauche
-function navigateLeft(event) {
-  event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
-  // Décrémente l'index tout en assurant qu'il reste dans la plage valide
-  currentIndex = (currentIndex - 1 + containersArray.length) % containersArray.length;
-  highlightCurrent(); // Met en évidence l'élément actuellement affiché
-  // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
-  containersArray[currentIndex].appendChild(Close);
-  containersArray[currentIndex].appendChild(flecheGauche);
-  containersArray[currentIndex].appendChild(flecheDroite);
-}
-
-// Fonction pour naviguer vers la droite
-function navigateRight(event) {
-  event.stopPropagation(); // Empêche la propagation du clic pour éviter de changer d'image ou de vidéo lors du clic sur le bouton de navigation
-  // Incrémente l'index tout en assurant qu'il reste dans la plage valide
-  currentIndex = (currentIndex + 1) % containersArray.length;
-  highlightCurrent(); // Met en évidence l'élément actuellement affiché
-  // Ajoute à nouveau les boutons de fermeture et de navigation à l'élément actuel
-  containersArray[currentIndex].appendChild(Close);
-  containersArray[currentIndex].appendChild(flecheGauche);
-  containersArray[currentIndex].appendChild(flecheDroite);
-}
-
-
-}
-
-
 
 // function qui gere les like et le prix
 function Like(photographers, media) {
   const prix = document.querySelector(".p-prix");
+  prix.setAttribute("tabindex",8);
   const likeTotal = document.querySelector(".p-like");
+  likeTotal.setAttribute("tabindex",8);
   const like = document.querySelectorAll(".likes");
   const coeur = document.querySelectorAll(".coeur");
   const urlParams = new URLSearchParams(window.location.search); // Obtient les paramètres de l'URL
@@ -519,6 +543,7 @@ function Like(photographers, media) {
     // Vérifie si l'ID du photographe correspond à l'ID spécifié dans le lien
     if (photographer.id === parseInt(photographerId)) {
       prix.textContent = photographer.price + "€ / jour";
+      prix.setAttribute("aria-label",`prix de la photographe par jour ${photographer.price} euros`);
     }
   });
 
@@ -528,6 +553,7 @@ function Like(photographers, media) {
     if (media.photographerId === parseInt(photographerId)) {
       totalPage += media.likes;
       likeTotal.textContent = totalPage;
+      likeTotal.setAttribute("aria-label",`nombre total de like de la page ${totalPage}`);
     }
   });
 
@@ -549,38 +575,38 @@ function Like(photographers, media) {
   // Afficher le total initial
   updateTotal();
 
-
-// Ajouter un gestionnaire d'événements à chaque coeur
-coeur.forEach((coeur, index) => {
-  coeur.addEventListener("click", (event) => {
+  // Ajouter un gestionnaire d'événements à chaque coeur
+  coeur.forEach((coeur, index) => {
+    coeur.addEventListener("click", (event) => {
       event.stopPropagation(); // empêche l'ouverture de la lightbox au clic sur le coeur
       toggleLike(index);
-  });
+    });
 
-  coeur.addEventListener("keydown", (event) => {
-      if (event.key === "Enter" || event.key === " " || event.keyCode === 13 || event.keyCode === 32) {
-          event.stopPropagation(); // empêche l'ouverture de la lightbox lors de la pression de la touche "Enter" ou de la barre d'espace sur le coeur
-          toggleLike(index);
+    coeur.addEventListener("keydown", (event) => {
+      if (
+        event.key === "Enter" ||
+        event.key === " " ||
+        event.keyCode === 13 ||
+        event.keyCode === 32
+      ) {
+        event.stopPropagation(); // empêche l'ouverture de la lightbox lors de la pression de la touche "Enter" ou de la barre d'espace sur le coeur
+        toggleLike(index);
       }
+    });
   });
-});
 
-// Fonction pour basculer l'état du bouton "J'aime"
-function toggleLike(index) {
-  if (likesCounts[index] === initialLikesCounts[index]) {
+  // Fonction pour basculer l'état du bouton "J'aime"
+  function toggleLike(index) {
+    if (likesCounts[index] === initialLikesCounts[index]) {
       likesCounts[index] += 1; // Ajouter 1 au compteur de likes
       coeur[index].style.color = "green";
-  } else {
+    } else {
       likesCounts[index] -= 1; // Soustraire 1 du compteur de likes
       coeur[index].style.color = "#901c1c";
+    }
+    like[index].textContent = likesCounts[index]; // Mettre à jour le nombre de likes individuel
+    updateTotal(); // Mettre à jour le total après chaque clic sur un cœur
   }
-  like[index].textContent = likesCounts[index]; // Mettre à jour le nombre de likes individuel
-  updateTotal(); // Mettre à jour le total après chaque clic sur un cœur
-}
-
-
-
-
 }
 
 // Fonction d'initialisation de l'application

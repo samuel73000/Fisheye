@@ -32,7 +32,8 @@ async function displayData(photographers) {
     photographers.forEach((photographer) => {
       // Créer un élément <a> pour chaque photographe
       const aForPagePhotographer = document.createElement("a");
-      aForPagePhotographer.href = `../../photographer.html?id=${photographer.id}`; // Lien différent pour chaque photographe  
+      aForPagePhotographer.href = `../../photographer.html?id=${photographer.id}`; // Lien différent pour chaque photographe
+      aForPagePhotographer.setAttribute("aria-label", `cliquer pour découvire la page du photograpahe${photographer.name}`); 
       // Utilise un modèle de photographe pour obtenir le DOM de la carte utilisateur
       const photographerModel = photographerTemplate(photographer);
       const userCardDOM = photographerModel.getUserCardDOM();
