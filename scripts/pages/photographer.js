@@ -43,13 +43,16 @@ async function displayData(photographers, media) {
 
       // Crée des éléments DOM pour afficher les données du photographe
       const divForName = document.createElement("div");
-      divForName.setAttribute("tabindex", 2);
+      // divForName.setAttribute("tabindex", 2);
       const pForCityCountry = document.createElement("p");
       pForCityCountry.classList.add("photographer_page_country");
+      pForCityCountry.setAttribute("tabindex", 2);
       const pForTagLine = document.createElement("p");
       pForTagLine.classList.add("photographer_page_tagline");
-      const h2ForName = document.createElement("h2");
+      pForTagLine.setAttribute("tabindex", 2);
+      const h2ForName = document.createElement("h1");
       h2ForName.classList.add("photographer_page_Name");
+      h2ForName.setAttribute("tabindex", 2);
       const imgPP = document.createElement("img");
       imgPP.classList.add("photographer_page_PP");
       imgPP.setAttribute("tabindex", 5);
@@ -83,7 +86,7 @@ async function displayData(photographers, media) {
         // Si le média est une image
         const divImage = document.createElement("div");
         const imgPhoto = document.createElement("img");
-        const imgTitle = document.createElement("h3");
+        const imgTitle = document.createElement("h2");
         const likeCount = document.createElement("p");
         const heartIcon = document.createElement("i");
 
@@ -119,7 +122,7 @@ async function displayData(photographers, media) {
         // Si le média est une vidéo
         const divVideo = document.createElement("div");
         const video = document.createElement("video");
-        const videoTitle = document.createElement("h3");
+        const videoTitle = document.createElement("h2");
         const likeCount = document.createElement("p");
         const heartIcon = document.createElement("i");
 
@@ -494,10 +497,12 @@ async function LightBox() {
     event.stopPropagation(); // Empêche la propagation du clic pour éviter de fermer la Lightbox lors du clic sur le bouton de fermeture
     setTimeout(() => {
       // Cache la Lightbox
-      containersArray[currentIndex].removeChild(Close);
-      containersArray[currentIndex].removeChild(flecheGauche);
-      containersArray[currentIndex].removeChild(flecheDroite);
+      // Nettoyer la Lightbox en supprimant les éléments existants
+      document.querySelectorAll(".fa-chevron-left").forEach(element => element.remove());
+  document.querySelectorAll(".fa-chevron-right").forEach(element => element.remove());
+  document.querySelectorAll(".crossClose").forEach(element => element.remove());
       containersArray[currentIndex].classList.remove("lightBox-container");
+ 
     }, 0);
   }
 
@@ -530,9 +535,9 @@ async function LightBox() {
 // function qui gere les like et le prix
 function Like(photographers, media) {
   const prix = document.querySelector(".p-prix");
-  prix.setAttribute("tabindex",8);
+  prix.setAttribute("tabindex", 8);
   const likeTotal = document.querySelector(".p-like");
-  likeTotal.setAttribute("tabindex",8);
+  likeTotal.setAttribute("tabindex", 8);
   const like = document.querySelectorAll(".likes");
   const coeur = document.querySelectorAll(".coeur");
   const urlParams = new URLSearchParams(window.location.search); // Obtient les paramètres de l'URL
@@ -543,7 +548,10 @@ function Like(photographers, media) {
     // Vérifie si l'ID du photographe correspond à l'ID spécifié dans le lien
     if (photographer.id === parseInt(photographerId)) {
       prix.textContent = photographer.price + "€ / jour";
-      prix.setAttribute("aria-label",`prix de la photographe par jour ${photographer.price} euros`);
+      prix.setAttribute(
+        "aria-label",
+        `prix de la photographe par jour ${photographer.price} euros`
+      );
     }
   });
 
@@ -553,7 +561,10 @@ function Like(photographers, media) {
     if (media.photographerId === parseInt(photographerId)) {
       totalPage += media.likes;
       likeTotal.textContent = totalPage;
-      likeTotal.setAttribute("aria-label",`nombre total de like de la page ${totalPage}`);
+      likeTotal.setAttribute(
+        "aria-label",
+        `nombre total de like de la page ${totalPage}`
+      );
     }
   });
 
@@ -619,9 +630,6 @@ async function init() {
 
   // Initialise la fonction de tri pour les médias
   trier();
-
-  // Initialise la Lightbox pour les médias
-  LightBox();
 
   // Initialise la like pour les médias
   Like(photographers, media);
