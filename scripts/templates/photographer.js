@@ -1,6 +1,6 @@
 function photographerTemplate(data) {
   // Extraction des données du photographe
-  const { name, portrait } = data;
+  const { name} = data;
 
   // Chemin de l'image du photographe
   const picture = `../../assets/photographers/PhotographersIDPhotos/${data.portrait}`;
