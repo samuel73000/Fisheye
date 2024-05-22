@@ -1,4 +1,4 @@
-// Fonction asynchrone pour récupérer les données des photographes depuis un fichier JSON
+// Fonction asynchrone pour récupérer les données des photographes depuis le fichier JSON
 async function getPhotographers() {
   try {
     // Effectue une requête fetch pour récupérer les données des photographes
